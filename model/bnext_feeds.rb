@@ -29,17 +29,18 @@ class RankFeeds
     bnext_robot = BNextRobot.new
     case type
     when 'weekrank'
-      bnext_robot.show_week_rank.each do |feed|
+      bnext_robot.week_rank_feeds.each do |feed|
         rank[feed.title] = feed.link
       end
     when 'dayrank'
-      bnext_robot.show_day_rank.each do |feed|
+      bnext_robot.day_rank_feeds.each do |feed|
         rank[feed.title] = feed.link
       end
     when 'feed'
       puts 'Category list:'
-      puts '[網路]: internet  [科技]: tech    [行銷]: marketing'
-      puts '[創業]: startup   [人物]: people  [技能]: skill'
+      bnext_robot.cats.each do |title, link|
+        puts "[#{title}]: #{link.split("/")[-1]}"
+      end
       print 'Category: '
       cat = $stdin.readline.chomp
       print 'Page number: '
