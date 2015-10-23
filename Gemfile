@@ -1,8 +1,9 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'thin'
 gem 'json'
+gem 'bnext_robot'
 
 group :test do
   gem 'minitest'

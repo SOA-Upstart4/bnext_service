@@ -20,11 +20,14 @@ GEM
       eventmachine (~> 1.0, >= 1.0.4)
       rack (~> 1.0)
     tilt (2.0.1)
+    bnext_robot (0.1.2)
+      oga
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  bnext_robot
   json
   minitest
   rack
