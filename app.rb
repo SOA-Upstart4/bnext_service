@@ -4,7 +4,7 @@ require_relative './model/bnext_feeds'
 class BNextcadetApp < Sinatra::Base
   helpers do
     def get_ranks(ranktype)
-      RankFeeds.new(ranktype)
+      RankFeeds.fetch(ranktype)
     rescue
       halt 404
     end
@@ -16,10 +16,10 @@ class BNextcadetApp < Sinatra::Base
 
   get '/api/v1/cadet/:ranktype.json' do
     content_type :json
-    get_ranks(param[:ranktype]).to_json
+    get_ranks(params[:ranktype]).to_json
   end
 
-  post '/api/v1/feeds' do
+  post '/api/v1/feed' do
     content_type :json
     begin
       req = JSON.parse(request.body.read)
