@@ -2,14 +2,20 @@ require 'bnext_robot'
 require 'json'
 
 class RankList
-  def []=(title, url)
-    @rank ||= {}
-    @rank[title] = url
+
+  def initialize(rank)
+    @rank = rank
+  end
+
+  def [](idx)
+    @rank[idx]
   end
 
   def to_json
-    @rank.map do |title, url|
-      { 'title' => title, 'url' => url }
+    @rank.each do |feed_hash|
+      keys = feed_hash.keys.map { |k| k.dup.force_encoding(Encoding::UTF_8) }
+      values = feed_hash.values.map { |v| if v.class == String then v.force_encoding(Encoding::UTF_8) else v end }
+      Hash[keys.zip(values)]
     end.to_json
   end
 end
@@ -22,24 +28,24 @@ class RankFeeds
     _load_ranks
   end
 
+  def self.fetch(type)
+    RankFeeds.new(type).rank
+  end
+
   private
 
   def _load_ranks
-    rank = RankList.new
     bnext_robot = BNextRobot.new
     case type
     when 'weekrank'
-      bnext_robot.show_week_rank.each do |feed|
-        rank[feed.title] = feed.link
-      end
+      @rank = RankList.new(bnext_robot.week_rank_feeds.map(&:to_hash))
     when 'dayrank'
-      bnext_robot.show_day_rank.each do |feed|
-        rank[feed.title] = feed.link
-      end
+      @rank = RankList.new(bnext_robot.day_rank_feeds.map(&:to_hash))
     when 'feed'
       puts 'Category list:'
-      puts '[網路]: internet  [科技]: tech    [行銷]: marketing'
-      puts '[創業]: startup   [人物]: people  [技能]: skill'
+      bnext_robot.cats.each do |title, link|
+        puts "[#{title}]: #{link.split("/")[-1]}"
+      end
       print 'Category: '
       cat = $stdin.readline.chomp
       print 'Page number: '
@@ -48,8 +54,9 @@ class RankFeeds
       if feed_found.length == 0
         puts 'Error: No result found. Check the input or internet connection.'
       else
-        puts "#{feed_found}"
+        @rank = RankList.new(feed_found.map(&:to_hash))
       end
     end
   end
+
 end
