@@ -1,3 +1,5 @@
+$KCODE = 'u' if RUBY_VERSION < '1.9'
+
 require 'sinatra/base'
 require_relative './model/bnext_feeds'
 
@@ -15,7 +17,7 @@ class BNextcadetApp < Sinatra::Base
   end
 
   get '/api/v1/:ranktype' do
-    content_type :json
+    content_type :json, 'charset' => 'utf-8'
     cat = 'tech'
     page_no = 1
 

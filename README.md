@@ -31,7 +31,7 @@ returns JSON of most popular weekly feeds info: title, link
 - `GET /api/v1/dayrank.json`
 returns JSON of most popular daily feeds info: title, link
 
-- `GET /api/v1/feed.[cat].[page].json`
+- `http://localhost:9292/api/v1/feed?cat=[cat]&page=[page_no]`
 returns JSON of feed info under particlar category and page number: title, author, date, content, tags, imgs. Available categories include: `internet`, `tech`, `marketing`, `startup`, `people`, and `skill`.
 
 (POST to be added.)
