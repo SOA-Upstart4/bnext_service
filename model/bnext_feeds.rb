@@ -26,9 +26,9 @@ class RankList
       error_msg += "Page no   : should be a natural number, a.k.a. POSITIVE INTEGER, and cannot be too large.\n"
       error_msg += "Categories:\n"
       @rank.each do |k, v|
-        error_msg += "\t\"#{v}\", for searching \"#{k}\"\n"
-      end
-      error_msg
+      error_msg += "\t\"#{v}\", for searching \"#{k}\"\n"
+    end
+    error_msg
     end
   end
 end
