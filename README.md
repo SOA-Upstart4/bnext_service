@@ -25,10 +25,10 @@ A simple version of web service that scrapes [BNext](http://www.bnext.com.tw/) d
 - `GET /`
 returns the current API version and Github homepage
 
-- `GET /api/v1/weekrank.json`
+- `GET /api/v1/weekrank`
 returns JSON of most popular weekly feeds info: *title*, *link*
 
-- `GET /api/v1/dayrank.json`
+- `GET /api/v1/dayrank`
 returns JSON of most popular daily feeds info: *title*, *link*
 
 - `GET /api/v1/feed?cat=[cat]&page=[page_no]`
