@@ -26,12 +26,12 @@ A simple version of web service that scrapes [BNext](http://www.bnext.com.tw/) d
 returns the current API version and Github homepage
 
 - `GET /api/v1/weekrank.json`
-returns JSON of most popular weekly feeds info: title, link 
+returns JSON of most popular weekly feeds info: *title*, *link*
 
 - `GET /api/v1/dayrank.json`
-returns JSON of most popular daily feeds info: title, link
+returns JSON of most popular daily feeds info: *title*, *link*
 
-- `http://localhost:9292/api/v1/feed?cat=[cat]&page=[page_no]`
-returns JSON of feed info under particlar category and page number: title, author, date, content, tags, imgs. Available categories include: `internet`, `tech`, `marketing`, `startup`, `people`, and `skill`.
+- `GET /api/v1/feed?cat=[cat]&page=[page_no]`
+returns JSON of feed info under particlar category and page number: *title*, *author*, *date*, *content*, *tags*, *imgs*. Available categories include: `internet`, `tech`, `marketing`, `startup`, `people`, and `skill`.
 
 (POST to be added.)
