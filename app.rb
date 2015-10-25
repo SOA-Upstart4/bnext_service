@@ -14,8 +14,14 @@ class BNextcadetApp < Sinatra::Base
     'This is version 1. Our Github homepage is : https://github.com/SOA-Upstart4/bnext_service'
   end
 
-  get '/api/v1/:ranktype.?:cat?.?:page?json' do
+  get '/api/v1/:ranktype' do
     content_type :json
-    get_ranks(params[:ranktype], params[:cat], params[:page]).to_json
+    cat = 'tech'
+    page_no = 1
+
+    cat = params['cat'] if params.has_key? 'cat'
+    page_no = params['page'] if params.has_key? 'page'
+    get_ranks(params[:ranktype], cat, page_no).to_json
   end
+  
 end
