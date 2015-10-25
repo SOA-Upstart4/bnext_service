@@ -25,5 +25,5 @@ class BNextcadetApp < Sinatra::Base
     page_no = params['page'] if params.has_key? 'page'
     get_ranks(params[:ranktype], cat, page_no).to_json
   end
-  
+
 end
