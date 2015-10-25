@@ -3,8 +3,8 @@ require_relative './model/bnext_feeds'
 
 class BNextcadetApp < Sinatra::Base
   helpers do
-    def get_ranks(ranktype)
-      RankFeeds.fetch(ranktype)
+    def get_ranks(ranktype, category, page)
+      RankFeeds.fetch(ranktype, category, page)
     rescue
       halt 404
     end
@@ -14,17 +14,10 @@ class BNextcadetApp < Sinatra::Base
     'This is version 1. Our Github homepage is : https://github.com/SOA-Upstart4/bnext_service'
   end
 
-  get '/api/v1/cadet/:ranktype.json' do
+  get '/api/v1/cadet/:ranktype.?:cat?.?:page?json' do
     content_type :json
-    get_ranks(params[:ranktype]).to_json
-  end
-
-  post '/api/v1/feed' do
-    content_type :json
-    begin
-      req = JSON.parse(request.body.read)
-    rescue
-      halt 400
-    end
+    cat = params[:cat] || ''
+    page = params[:page] || ''
+    get_ranks(params[:ranktype], cat, page).to_json
   end
 end
