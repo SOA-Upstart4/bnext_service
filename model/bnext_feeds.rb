@@ -10,6 +10,10 @@ class RankList
     @rank[idx]
   end
 
+  def length
+    @rank.length
+  end
+
   def to_json
     @rank.each do |feed_hash|
       keys = feed_hash.keys.map { |k| k.dup.force_encoding(Encoding::UTF_8) }
