@@ -2,13 +2,16 @@ require 'bnext_robot'
 require 'json'
 
 class RankList
-
   def initialize(rank)
     @rank = rank
   end
 
   def [](idx)
     @rank[idx]
+  end
+
+  def length
+    @rank.length
   end
 
   def to_json
@@ -21,15 +24,17 @@ class RankList
 end
 
 class RankFeeds
-  attr_reader :type, :rank
+  attr_reader :type, :category, :page, :rank
 
-  def initialize(type)
+  def initialize(type, category = '', page = '')
     @type = type
+    @category = category
+    @page = page
     _load_ranks
   end
 
-  def self.fetch(type)
-    RankFeeds.new(type).rank
+  def self.fetch(type, category, page)
+    RankFeeds.new(type, category, page).rank
   end
 
   private
@@ -42,15 +47,7 @@ class RankFeeds
     when 'dayrank'
       @rank = RankList.new(bnext_robot.day_rank_feeds.map(&:to_hash))
     when 'feed'
-      puts 'Category list:'
-      bnext_robot.cats.each do |title, link|
-        puts "[#{title}]: #{link.split("/")[-1]}"
-      end
-      print 'Category: '
-      cat = $stdin.readline.chomp
-      print 'Page number: '
-      page_no = $stdin.readline.chomp
-      feed_found = bnext_robot.get_feeds(cat, page_no)
+      feed_found = bnext_robot.get_feeds(@category, @page)
       if feed_found.length == 0
         puts 'Error: No result found. Check the input or internet connection.'
       else
@@ -58,5 +55,4 @@ class RankFeeds
       end
     end
   end
-
 end
