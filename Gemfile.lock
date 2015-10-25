@@ -3,7 +3,7 @@ GEM
   specs:
     ansi (1.5.0)
     ast (2.1.0)
-    bnext_robot (0.1.4)
+    bnext_robot (0.1.5)
       oga
     daemons (1.2.3)
     eventmachine (1.0.8)
