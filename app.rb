@@ -9,6 +9,10 @@ require_relative 'bnext_helper'
 class BNextcadetApp < Sinatra::Base
   helpers BNextHelpers
 
+  configure :production, :development do
+    enable :logging
+  end
+
   get_root = lambda do
     'This is version 0.0.1. See documentation at its ' \
       '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
