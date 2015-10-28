@@ -4,13 +4,7 @@ require 'sinatra/base'
 require_relative './model/bnext_feeds'
 
 class BNextcadetApp < Sinatra::Base
-  helpers do
-    def get_ranks(ranktype, category, page)
-      RankFeeds.fetch(ranktype, category, page)
-    rescue
-      halt 404
-    end
-  end
+  helpers BNextHelpers
 
   get '/' do
     'This is version 1. Our Github homepage is : https://github.com/SOA-Upstart4/bnext_service'
