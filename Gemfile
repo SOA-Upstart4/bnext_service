@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'thin'
 gem 'json'
 gem 'bnext_robot'
+gem 'vcr'
 
 group :test do
   gem 'minitest'
