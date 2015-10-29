@@ -26,4 +26,8 @@ class BNextcadetApp < Sinatra::Base
     get_ranks(params[:ranktype], cat, page_no).to_json
   end
 
+  not_found do
+    halt 404
+  end
+
 end
