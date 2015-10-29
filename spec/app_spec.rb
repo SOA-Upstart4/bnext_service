@@ -38,10 +38,24 @@ describe 'Getting rank_type information' do
     last_response.must_be :ok?
   end
 
-  #it 'should return 404 fo wrong ranktype' do
-    #VCR.use_cassette('wrong_ranktype') do
-      #get '/api/v1/#{random_str(10)}'
-    #end
-    #last_response.must_be :not_found?
-  #end
+  it 'should return bad request for wrong ranktype' do
+    VCR.use_cassette('wrong_ranktype') do
+      get "/api/v1/#{random_str(10)}"
+    end
+    last_response.body.must_match(Constants::USAGE)
+  end
+
+  it 'should not find route 1' do
+    VCR.use_cassette('wrong_route_1') do
+      get "#{random_str(10)}"
+    end
+    last_response.must_be :not_found?
+  end
+
+  it 'should not find route 2' do
+    VCR.use_cassette('wrong_route_2') do
+      get "/api/#{random_str(10)}"
+    end
+    last_response.must_be :not_found?
+  end
 end
