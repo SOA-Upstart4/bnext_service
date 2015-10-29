@@ -53,4 +53,13 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 			"skill", for searching "技能"
 	```
 
-(POST to be added.)
+- `POST /api/v1/recent`
+	- takes JSON: array of 'categories'
+	- returns: array of categories and the newest feed in that category
+		- Command line connetction example:
+		```
+		-curl -v -H "Accept: application/json" -H "Content-type: application/json" \
+		-X POST -d "{\"category\":[\"tech\",\"marketing\"]}" \
+		http://localhost:9292/api/v1/recent
+		```
+
