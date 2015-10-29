@@ -29,10 +29,20 @@ class BNextcadetApp < Sinatra::Base
     get_ranks(params[:ranktype], cat, page_no).to_json
   end
   
-  # to do: POST to be added here
+  post_recent = lambda do
+    content_type :json
+    begin
+      req = JSON.parse(request.body.read)
+      logger.info req
+    rescue
+      halt 400
+    end
+
+    newest_feeds(req['categories']).to_json
+  end
 
   # Web API Routes
   get '/', &get_root
   get '/api/v1/:ranktype', &get_feed_ranktype
-  # to do: POST route to be added here
+  post '/api/v1/recent', &post_recent
 end
