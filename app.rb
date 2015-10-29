@@ -25,9 +25,7 @@ class BNextcadetApp < Sinatra::Base
     page_no = params['page'] if params.has_key? 'page'
     get_ranks(params[:ranktype], cat, page_no).to_json
   end
-
   not_found do
     halt 404
   end
-
 end
