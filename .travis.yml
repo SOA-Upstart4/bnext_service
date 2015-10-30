@@ -6,7 +6,6 @@ branches:
   only:
     - dev
     - master
-    - dev-edison
--script:
+script:
   - bundle install
   - rake
