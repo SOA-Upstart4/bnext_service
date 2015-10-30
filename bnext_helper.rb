@@ -10,7 +10,6 @@ module BNextHelpers
   end
 
   def newest_feeds(categories)
-    @newest = {}
     categories.map do |category|
       found = RankFeeds.fetch('feed', category, '1')
       [category, found[0]]
