@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+  - ruby-head
+  - jruby-head
+branches:
+  only:
+    - dev
+    - master
+    - dev-edison
+-script:
+  - bundle install
+  - rake
