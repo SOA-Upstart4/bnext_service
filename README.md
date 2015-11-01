@@ -1,4 +1,6 @@
 # BnextRobot Webservice
+[ ![Codeship Status for SOA-Upstart4/bnext_service](https://codeship.io/projects/98343a30-628b-0133-e9cf-1af77e49650b/status?branch=master)](https://codeship.io/projects/112642)
+
 
 ## Overview
 A simple version of web service that scrapes [BNext](http://www.bnext.com.tw/) data using the [bnext_robot](https://rubygems.org/gems/bnext_robot) gem.
@@ -34,7 +36,7 @@ returns JSON of most popular daily feeds info: *title*, *link*
 - `GET /api/v1/feed?cat=[cat]&page=[page_no]`
 returns JSON of feeds info under a specific category and page number: *title*, *author*, *date*, *content*, *tags*, *imgs*. Available categories include: `internet`, `tech`, `marketing`, `startup`, `people`, and `skill`.
 
-	- E.g. 
+	- E.g.
 		- `http://localhost:9292/api/v1/feed?cat=marketing`
 		- `http://localhost:9292/api/v1/feed?cat=marketing&page=2`
 	- Note that if the request parameters are invalid for crawling data, the service will return error message to notify users and suggest a normal use of queries.
@@ -62,4 +64,3 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 		-X POST -d "{\"categories\":[\"tech\",\"marketing\"]}" \
 		http://localhost:9292/api/v1/recent
 		```
-
