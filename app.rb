@@ -9,16 +9,14 @@ require_relative 'bnext_helper'
 class BNextcadetApp < Sinatra::Base
   helpers BNextHelpers
 
-  ROOT_MSG = 'This is version 0.0.1. See documentation at its ' \
-      '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
-      'Github repo</a>'
-
   configure :production, :development do
     enable :logging
   end
 
   get_root = lambda do
-    ROOT_MSG
+    'This is version 0.0.1. See documentation at its ' \
+      '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
+      'Github repo</a>'
   end
   
   get_feed_ranktype = lambda do

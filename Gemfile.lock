@@ -1,0 +1,48 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ansi (1.5.0)
+    ast (2.1.0)
+    bnext_robot (0.1.5)
+      oga
+    daemons (1.2.3)
+    eventmachine (1.0.8)
+    json (1.8.3)
+    minitest (5.8.1)
+    oga (1.3.1)
+      ast
+      ruby-ll (~> 2.1)
+    rack (1.6.4)
+    rack-protection (1.5.3)
+      rack
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rake (10.4.2)
+    ruby-ll (2.1.2)
+      ansi
+      ast
+    sinatra (1.4.6)
+      rack (~> 1.4)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
+    thin (1.6.4)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (~> 1.0)
+    tilt (2.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bnext_robot
+  json
+  minitest
+  rack
+  rack-test
+  rake
+  sinatra
+  thin
+
+BUNDLED WITH
+   1.10.6
