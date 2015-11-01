@@ -39,7 +39,6 @@ class RankList
     else
       error_msg = "Bad request: the query format is #{Constants::USAGE}\n"
     end
-    error_msg
   end
 end
 
@@ -61,7 +60,7 @@ class RankFeeds
 
   def _load_ranks
     bnext_robot = BNextRobot.new
-    case type
+    case @type
 
       when 'weekrank'
         @rank = RankList.new(bnext_robot.week_rank_feeds.map(&:to_hash))
