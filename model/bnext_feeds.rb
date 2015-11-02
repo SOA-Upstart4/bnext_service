@@ -2,7 +2,7 @@ require 'bnext_robot'
 require 'json'
 
 class Constants
-  USAGE = "'/api/v1/[dayrank | weekrank | feed?cat=___&page=___]'"
+  USAGE = "Bad request: the query format is '/api/v1/[dayrank | weekrank | feed?cat=___&page=___]'\n"
 end
 
 class RankList
@@ -37,7 +37,7 @@ class RankList
       end
 
     else
-      error_msg = "Bad request: the query format is #{Constants::USAGE}\n"
+      error_msg = Constants::USAGE
     end
   end
 end
