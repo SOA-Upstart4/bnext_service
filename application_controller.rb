@@ -6,7 +6,7 @@ require_relative 'bnext_helper'
 
 ##
 # Simple web service to crawl Bnext webpages
-class BNextcadetApp < Sinatra::Base
+class ApplicationController < Sinatra::Base
   helpers BNextHelpers
 
   ROOT_MSG = 'This is version 0.0.1. See documentation at its ' \
@@ -20,7 +20,7 @@ class BNextcadetApp < Sinatra::Base
   get_root = lambda do
     ROOT_MSG
   end
-  
+
   get_feed_ranktype = lambda do
     content_type :json, 'charset' => 'utf-8'
     cat = 'tech'
@@ -30,7 +30,7 @@ class BNextcadetApp < Sinatra::Base
     page_no = params['page'] if params.has_key? 'page'
     get_ranks(params[:ranktype], cat, page_no).to_json
   end
-  
+
   post_recent = lambda do
     content_type :json
     begin
