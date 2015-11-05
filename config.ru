@@ -1,2 +1,2 @@
-require './app.rb'
-run BNextcadetApp
+require './application_controller.rb'
+run ApplicationController

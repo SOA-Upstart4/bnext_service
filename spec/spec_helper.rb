@@ -4,12 +4,12 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'vcr'
 require 'webmock/minitest'
-require_relative '../app'
+require_relative '../application_controller'
 
 include Rack::Test::Methods
 
 def app
-  BNextcadetApp
+  ApplicationController
 end
 
 def random_str(n)
