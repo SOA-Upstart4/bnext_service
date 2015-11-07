@@ -5,7 +5,7 @@ require 'sinatra/base'
 ##
 # Simple web service to crawl Bnext webpages
 class ApplicationController < Sinatra::Base
-  helpers BNextHelpers, TrendHelpers
+  helpers BNextHelpers
 
   ROOT_MSG = 'This is version 0.0.1. See documentation at its ' \
       '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
