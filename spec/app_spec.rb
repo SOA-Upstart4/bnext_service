@@ -1,5 +1,4 @@
 require_relative 'spec_helper'
-require_relative '../application_controller'
 require_relative 'spec_answers'
 require 'json'
 
