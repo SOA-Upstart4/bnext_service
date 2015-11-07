@@ -1,5 +1,3 @@
-require_relative './model/bnext_feeds'
-
 ##
 # Helpers for main Sinatra web application
 module BNextHelpers
