@@ -1,8 +1,6 @@
 $KCODE = 'u' if RUBY_VERSION < '1.9'
 
 require 'sinatra/base'
-require_relative './model/bnext_feeds'
-require_relative 'bnext_helper'
 
 ##
 # Simple web service to crawl Bnext webpages
