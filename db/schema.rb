@@ -15,14 +15,7 @@ ActiveRecord::Schema.define(version: 20151107105747) do
 
   create_table "trends", force: :cascade do |t|
     t.string   "description"
-    t.string   "links"
-    t.string   "titles"
-    t.string   "categories"
-    t.string   "authors"
-    t.string   "dates"
-    t.text     "contents"
-    t.string   "tags"
-    t.string   "imgs"
+    t.text     "categories"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
