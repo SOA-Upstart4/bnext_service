@@ -30,7 +30,7 @@ class ApplicationController < Sinatra::Base
   end
 
   post_recent = lambda do
-    content_type :json
+    content_type :json, 'charset' => 'utf-8'
     begin
       req = JSON.parse(request.body.read)
       logger.info req
@@ -51,7 +51,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get_trend = lambda do
-    content_type :json
+    content_type :json, 'charset' => 'utf-8'
     begin
       trend = Trend.find(params[:id])
       description = trend.description
@@ -71,7 +71,7 @@ class ApplicationController < Sinatra::Base
   # Web API Routes
   get '/', &get_root
   get '/api/v1/:ranktype', &get_feed_ranktype
-
   get '/api/v1/trend/:id', &get_trend
+
   post '/api/v1/recent', &post_recent
 end
