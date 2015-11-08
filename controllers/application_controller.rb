@@ -38,11 +38,40 @@ class ApplicationController < Sinatra::Base
       halt 400
     end
 
-    newest_feeds(req['categories']).to_json
+    trend = Trend.new(
+      description: req['description'],
+      categories: req['categories'].to_json)
+
+    if trend.save
+      status 201
+      redirect "api/v1/trend/#{trend.id}", 303
+    else
+      halt 500, 'Error saving trend request to the database'
+    end
+  end
+
+  get_trend = lambda do
+    content_type :json
+    begin
+      trend = Trend.find(params[:id])
+      description = trend.description
+      categories = JSON.parse(trend.categories)
+      logger.info({ id: trend.id, description: description }.to_json)
+    rescue
+      halt 400
+    end
+
+    begin
+      newest_feeds(categories).to_json
+    rescue
+      halt 500, 'Lookup of BNext failed'
+    end
   end
 
   # Web API Routes
   get '/', &get_root
   get '/api/v1/:ranktype', &get_feed_ranktype
+
+  get '/api/v1/trend/:id', &get_trend
   post '/api/v1/recent', &post_recent
 end
