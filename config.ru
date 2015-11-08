@@ -1,2 +1,3 @@
-require './app.rb'
-run BNextcadetApp
+Dir.glob('./{models,helpers,controllers}/*.rb').each { |file| require file }
+
+run ApplicationController
