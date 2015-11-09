@@ -8,7 +8,7 @@ describe 'Getting rank_type information' do
       get '/api/v1/weekrank'
     end
     last_response.must_be :ok?
-    last_response.body.must_equal(Answer::WEEK_RANK)
+    JSON.parse(last_response.body).must_equal(JSON.parse(Answer::WEEK_RANK))
   end
 
   it 'should return day rank feeds' do
@@ -16,7 +16,7 @@ describe 'Getting rank_type information' do
       get '/api/v1/dayrank'
     end
     last_response.must_be :ok?
-    last_response.body.must_equal(Answer::DAY_RANK)
+    JSON.parse(last_response.body).must_equal(JSON.parse(Answer::DAY_RANK))
   end
 
   it 'should return default feeds' do
@@ -24,7 +24,7 @@ describe 'Getting rank_type information' do
       get '/api/v1/feed'
     end
     last_response.must_be :ok?
-    last_response.body.must_equal(Answer::FEED_DEFAULT)
+    JSON.parse(last_response.body).must_equal(JSON.parse(Answer::FEED_DEFAULT))
   end
 
   it 'should return internet page 4 feeds' do
