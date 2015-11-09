@@ -2,7 +2,7 @@ require 'bnext_robot'
 require 'json'
 
 class Constants
-  USAGE = "'/api/v1/[dayrank | weekrank | feed?cat=___&page=___]'"
+  USAGE = "Bad request: the query format is '/api/v1/[dayrank | weekrank | feed?cat=___&page=___]'\n"
 end
 
 class RankList
@@ -37,9 +37,8 @@ class RankList
       end
 
     else
-      error_msg = "Bad request: the query format is #{Constants::USAGE}\n"
+      error_msg = Constants::USAGE
     end
-    error_msg
   end
 end
 
@@ -61,7 +60,7 @@ class RankFeeds
 
   def _load_ranks
     bnext_robot = BNextRobot.new
-    case type
+    case @type
 
       when 'weekrank'
         @rank = RankList.new(bnext_robot.week_rank_feeds.map(&:to_hash))
