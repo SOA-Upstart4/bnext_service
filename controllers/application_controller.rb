@@ -44,10 +44,12 @@ class ApplicationController < Sinatra::Base
     end
   end
 
-  get_root = lambda do
-    'This is version 0.0.1. See documentation at its ' \
+  ROOT_MSG = 'This is version 0.0.1. See documentation at its ' \
       '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
       'Github repo</a>'
+
+  get_root = lambda do
+    ROOT_MSG
   end
 
   get_feed_ranktype = lambda do
@@ -93,13 +95,13 @@ class ApplicationController < Sinatra::Base
     end
 
     begin
-      results = newest_feeds(categories)
+      results = newest_feeds(categories).to_json
     rescue
       halt 500, 'Lookup of BNext failed'
     end
 
-    { id: trend.id, description: description,
-      categories: categories, newest: results }.to_json
+    #{ id: trend.id, description: description,
+    #  categories: categories, newest: results }.to_json
   end
 
   delete_trend = lambda do
@@ -108,7 +110,7 @@ class ApplicationController < Sinatra::Base
   end
 
   # Web API Routes
-  get '/api/v1/', &get_root
+  get '/api/v1', &get_root
   get '/api/v1/:ranktype', &get_feed_ranktype
   get '/api/v1/trend/:id', &get_trend
   post '/api/v1/trend', &post_trend
