@@ -1,6 +1,10 @@
 $KCODE = 'u' if RUBY_VERSION < '1.9'
 
 require 'sinatra/base'
+require 'sinatra/flash'
+require 'httparty'
+require 'hirb'
+require 'slim'
 
 ##
 # Simple web service to crawl Bnext webpages
@@ -13,6 +17,10 @@ class ApplicationController < Sinatra::Base
 
   configure :production, :development do
     enable :logging
+  end
+
+  configure do
+    Hirb.enable
   end
 
   get_root = lambda do
