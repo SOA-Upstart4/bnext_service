@@ -10,21 +10,44 @@ require 'slim'
 # Simple web service to crawl Bnext webpages
 class ApplicationController < Sinatra::Base
   helpers BNextHelpers, TrendHelpers
+  enable :sessions
+  register Sinatra::Flash
+  use Rack::MethodOverride
 
-  ROOT_MSG = 'This is version 0.0.1. See documentation at its ' \
-      '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
-      'Github repo</a>'
+  set :views, File.expand_path('../../views', __FILE__)
+  set :public_folder, File.expand_path('../../public', __FILE__)
+
+  configure do
+    Hirb.enable
+    set :session_secret, 'something'
+    set :api_ver, 'api/v1'
+  end
+
+  configure :development, :test do
+    set :api_server, 'http://localhost:9292'
+  end
+
+  configure :production do
+    set :api_server, 'https://trendcrawl.herokuapp.com/'
+  end
 
   configure :production, :development do
     enable :logging
   end
 
-  configure do
-    Hirb.enable
+  helpers do
+    def current_page?(path = ' ')
+      path_info = request.path_info
+      path_info += ' ' if path_info == '/'
+      request_path = path_info.split '/'
+      request_path[1] == path
+    end
   end
 
   get_root = lambda do
-    ROOT_MSG
+    'This is version 0.0.1. See documentation at its ' \
+      '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
+      'Github repo</a>'
   end
 
   get_feed_ranktype = lambda do
@@ -37,7 +60,7 @@ class ApplicationController < Sinatra::Base
     get_ranks(params[:ranktype], cat, page_no).to_json
   end
 
-  post_recent = lambda do
+  post_trend = lambda do
     content_type :json, 'charset' => 'utf-8'
     begin
       req = JSON.parse(request.body.read)
@@ -70,16 +93,65 @@ class ApplicationController < Sinatra::Base
     end
 
     begin
-      newest_feeds(categories).to_json
+      results = newest_feeds(categories)
     rescue
       halt 500, 'Lookup of BNext failed'
     end
+
+    { id: trend.id, description: description,
+      categories: categories, newest: results }.to_json
+  end
+
+  delete_trend = lambda do
+    trend = Trend.destroy(params[:id])
+    status(trend > 0 ? 200 : 404)
   end
 
   # Web API Routes
-  get '/', &get_root
+  get '/api/v1/', &get_root
   get '/api/v1/:ranktype', &get_feed_ranktype
   get '/api/v1/trend/:id', &get_trend
+  post '/api/v1/trend', &post_trend
+  delete '/api/v1/trend/:id', &delete_trend
 
-  post '/api/v1/recent', &post_recent
+# Web app views
+  app_get_root = lambda do
+    slim :home
+  end
+
+  app_get_feed = lambda do
+    @ranktype = params[:ranktype]
+    # @cat = params['cat'] if params.has_key? 'cat'
+    # @page_no = params['page'] if params.has_key? 'page'
+    if @ranktype
+      redirect "/feed/#{@ranktype}"
+      # To be included: redirect to get feeds in specific cat/page
+      return nil
+    end
+
+    slim :feed
+  end
+
+  app_get_feed_ranktype = lambda do
+    @ranktype = params[:ranktype]
+    @cat = params['cat'] if params.has_key? 'cat'
+    @page_no = params['page'] if params.has_key? 'page'
+    @rank = get_ranks(@ranktype, @cat, @page_no)
+
+    if @ranktype && @rank.nil?
+      flash[:notice] = 'no feed found' if @rank.nil?
+      redirect '/feed'
+      return nil
+    end
+
+    slim :feed
+  end
+
+  # To be added: app_get_trend, app_post_trend,app_get_trend_id, app_delete_trend_id
+
+  # Web App Views Routes
+  get '/', &app_get_root
+  get '/feed', &app_get_feed
+  get '/feed/:ranktype', &app_get_feed_ranktype
+  # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
 end
