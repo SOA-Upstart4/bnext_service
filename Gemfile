@@ -9,6 +9,11 @@ gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'tux'
 
+gem 'hirb'
+gem 'slim'
+gem 'httparty'
+gem 'sinatra-flash'
+
 group :development, :test do
   gem 'sqlite3'
 end
