@@ -110,11 +110,11 @@ class ApplicationController < Sinatra::Base
   end
 
   # Web API Routes
-  get '/api/v1', &get_root
-  get '/api/v1/:ranktype', &get_feed_ranktype
-  get '/api/v1/trend/:id', &get_trend
-  post '/api/v1/trend', &post_trend
-  delete '/api/v1/trend/:id', &delete_trend
+  get '/api/v1/?', &get_root
+  get '/api/v1/:ranktype/?', &get_feed_ranktype
+  get '/api/v1/trend/:id/?', &get_trend
+  post '/api/v1/trend/?', &post_trend
+  delete '/api/v1/trend/:id/?', &delete_trend
 
 # Web app views
   app_get_root = lambda do
@@ -152,8 +152,8 @@ class ApplicationController < Sinatra::Base
   # To be added: app_get_trend, app_post_trend,app_get_trend_id, app_delete_trend_id
 
   # Web App Views Routes
-  get '/', &app_get_root
-  get '/feed', &app_get_feed
-  get '/feed/:ranktype', &app_get_feed_ranktype
+  get '/?', &app_get_root
+  get '/feed/?', &app_get_feed
+  get '/feed/:ranktype/?', &app_get_feed_ranktype
   # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
 end
