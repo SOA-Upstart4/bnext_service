@@ -1,0 +1,16 @@
+.container
+
+  form action='/trend' method='post' id='user-form'
+    input type='submit' value='GO'
+  p
+
+/  - if @results
+/    table class='center'
+/      tbody
+/        tr
+/        - th Top #{@results.length} feeds
+/        - @results.each do |cat, feed|
+/          tr
+/            td
+/              |#{cat}: <a href=#{feed[i]['link']} target="_blank">#{feed['title']}</a>
+/          end

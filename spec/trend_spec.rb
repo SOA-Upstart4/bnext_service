@@ -31,7 +31,7 @@ describe 'Checking newest feeds' do
     last_request.url.must_match %r{api\/v1\/trend\/\d+}
 
     # Check if redirected response has results
-    last_response.body.must_equal(Answer::TREND)
+    JSON.parse(last_response.body).must_equal(JSON.parse(Answer::RECENT))
   end
 
   it 'should return 400 for bad JSON formatting' do
