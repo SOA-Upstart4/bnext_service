@@ -7,22 +7,68 @@ A simple version of web service that scrapes [BNext](http://www.bnext.com.tw/) d
 
 ## Repository structure
 ```
-├── app.rb
-├── config.ru
 ├── Gemfile
 ├── Gemfile.lock
 ├── LICENSE
-├── model
-│   └── bnext_feeds.rb
 ├── Procfile
-├── Rakefile
 ├── README.md
-└── spec
-    ├── app_spec.rb
-    └── spec_helper.rb
+├── Rakefile
+├── config
+│   ├── database.yml
+│   └── environments.rb
+├── config.ru
+├── controllers
+│   └── application_controller.rb
+├── db
+│   ├── dev.db
+│   ├── migrate
+│   │   └── 20151107105747_create_trends.rb
+│   ├── schema.rb
+│   └── test.db
+├── helpers
+│   ├── bnext_helper.rb
+│   └── trend_helper.rb
+├── models
+│   ├── bnext_feeds.rb
+│   └── trend.rb
+├── public
+│   ├── fonts
+│   │   ├── FontAwesome.otf
+│   │   ├── fontawesome-social-webfont.eot
+│   │   ├── fontawesome-social-webfont.svg
+│   │   ├── fontawesome-social-webfont.ttf
+│   │   ├── fontawesome-social-webfont.woff
+│   │   ├── fontawesome-webfont.eot
+│   │   ├── fontawesome-webfont.svg
+│   │   ├── fontawesome-webfont.ttf
+│   │   └── fontawesome-webfont.woff
+│   ├── header.jpg
+│   └── style.css
+├── spec
+│   ├── app_spec.rb
+│   ├── bnext_spec.rb
+│   ├── fixtures
+│   │   └── vcr_cassettes
+│   │       ├── day_rank.yml
+│   │       ├── default_feed.yml
+│   │       ├── internet_page_4.yml
+│   │       ├── post_random.yml
+│   │       ├── post_recent.yml
+│   │       ├── post_trend.yml
+│   │       ├── week_rank.yml
+│   │       └── wrong_ranktype.yml
+│   ├── spec_answers.rb
+│   ├── spec_helper.rb
+│   └── trend_spec.rb
+└── views
+    ├── feed.slim
+    ├── footer.slim
+    ├── home.slim
+    ├── layout.slim
+    └── nav.slim
 ```
 
-## Handles
+## Quick Start
 
 - `GET /`
 returns the current API version and Github homepage
@@ -64,3 +110,63 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 		-X POST -d "{\"categories\":[\"tech\",\"marketing\"]}" \
 		http://localhost:9292/api/v1/recent
 		```
+
+
+## Service Architecture
+
+### Overview
+
+<table>
+	<tr>
+		<td><b>FOLDER</b></td>
+		<td><b>FILE</b></td>
+		<td><b>DESCRIPTION</b></td>
+	</tr>
+	
+	<!-- Controllers -->
+	<tr>
+		<td rowspan="1"><a href="#controllers">/controllers/</a></td>
+		<td>application_controller.rb</td>
+		<td>main control of the app</td>
+	</tr>
+	
+	<!-- Helpers -->
+	<tr>
+		<td rowspan="2"><a href="#helpers">/helpers/</a></td>
+		<td>bnext_helper.rb</td>
+		<td>functions related to "Business Next"</td>
+	</tr>
+	<tr>
+		<td>trend_help.rb</td>
+		<td>functions related to keywords trend extraction</td>
+	</tr>
+	
+	<!-- Models -->
+	<tr>
+		<td rowspan="2"><a href="#models">/models/</a></td>
+		<td>bnext_feeds.rb</td>
+		<td>Processing the data retrieving from BNextRobot into a format the app accepts</td>
+	</tr>
+	<tr>
+		<td>trend.rb</td>
+		<td>Reducing the content retrieving from BNextRobot into TREND information</td>
+	</tr>
+	
+</table>
+
+<h1 id="controllers" />
+### Controllers
+
+- application_controller.rb (ApplicationController)
+
+	| API ROUTE | TYPE | METHOD | PARAMS | DESCRIPTION
+	|:----:|:----:|:----:|:----:|:----
+	| `/api/v1` | API | `GET` | N/A | Root directory
+	| `/api/v1/dayrank` | API | `GET` | N/A | Getting daily hot feeds
+	| `/api/v1/weekrank` | API | `GET` | N/A | Getting weekly hot feeds
+	| `/api/v1/feed` | API | `GET` | `cat={CATEGORY}&page={PAGENO}` | Getting feeds under a specific category at specific page number
+	| `/api/v1/trend/{ID}` | API | `GET` | N/A | Finding trend information with specific ID
+	| `/api/v1/trend` | API | `POST` | `{ "description": "{DESC}", categories: ["{CAT1}", "{CAT2}", ... , "{CATn}"] }` | TBD
+	| `/api/v1/trend/{ID}` | API | `DELETE` | N/A | Deleting trend information with specific ID
+	| `/` | GUI | `GET` | N/A |
+	| `/feed/` | GUI | `GET` | N/A | 

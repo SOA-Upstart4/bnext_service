@@ -8,6 +8,19 @@ gem 'bnext_robot'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'tux'
+gem 'hirb'
+gem 'hirb-unicode'
+
+gem 'httparty'
+
+gem 'sinatra-flash'
+gem 'slim'
+gem 'tilt'
+
+gem 'hirb'
+gem 'slim'
+gem 'httparty'
+gem 'sinatra-flash'
 
 group :development, :test do
   gem 'sqlite3'

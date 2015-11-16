@@ -4,7 +4,7 @@ require 'json'
 
 describe 'Getting the root of the service' do
   it 'should return ok' do
-    get '/'
+    get '/api/v1'
     last_response.must_be :ok?
     last_response.body.must_match(ApplicationController::ROOT_MSG)
   end
