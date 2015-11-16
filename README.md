@@ -112,7 +112,7 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 		```
 
 
-## Service Architecture
+## Project Architecture
 
 ### Overview
 
@@ -170,3 +170,40 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 	| `/api/v1/trend/{ID}` | API | `DELETE` | N/A | Deleting trend information with specific ID
 	| `/` | GUI | `GET` | N/A |
 	| `/feed/` | GUI | `GET` | N/A | 
+	
+<h1 id="helpers" />
+### Helpers
+
+- bnext_helper.rb
+
+	| MODULE | FIELD | TYPE | ACCESS | PARAMS | DESCRIPTION
+	|:----:|:----:|:----:|:----:|:----:|:----
+	| `BNextHelpers` | `get_rank` | func returns `RankList` | public | `type: category: page: ` | retrieve `Feed`'s
+
+- trend_helper.rb
+	
+	| MODULE | FIELD | TYPE | ACCESS | PARAMS | DESCRIPTION
+	|:----:|:----:|:----:|:----:|:----:|:----
+	| `TrendHelpers` | `get_popular_words` | func returns `Hash` | public | `max_num: cat: ` | get top `max_num` words that are puplar used so far with specific category
+
+<h1 id="models" />
+### Models
+
+- bnext_feed.rb
+
+	| CLASS | FIELD | TYPE | ACCESS | PARAMS | DESCRIPTION
+	|:----:|:----:|:----:|:----:|:----:|:----
+	| `RankFeeds` | `fetch` | func returns `RankList` | static public | `type: category: page: ` | returns an array of `Feed` that is JSON-parsable with specific configuration
+	| `RankFeeds` | `type` | var | read | N/A | `dayrank`<br/>\|`weekrank` <br/>\|`feed`
+	| `RankFeeds` | `category` | var | read | N/A | see Quick Start
+	| `RankFeeds` | `page` | var | read | N/A | see Quick Start
+	| `RankList` | `to_json` | func returns string | public | N/A | parse to JSON string
+
+- trend.rb
+
+	| CLASS | FIELD | TYPE | ACCESS | PARAMS | DESCRIPTION
+	|:----:|:----:|:----:|:----:|:----:|:----
+	| `Trend` | `keywords` | var | read | N/A | a Hash that stores word/int as key-value pairs
+	| `TrendFactory` | `shared_instance` | var | static public | N/A | singleton handle
+	| `TrendFactory` | `get_corpora` | func returns array | public | N/A | link to the db and get the latest statistical texts model
+	| `TrendFactory` | `process` | func returns `Trend` | public | `feed: ` | analyze the content to extract possible keywords that match the statistical model

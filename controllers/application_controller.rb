@@ -149,11 +149,34 @@ class ApplicationController < Sinatra::Base
     slim :feed
   end
 
+  app_get_trend = lambda do
+    id = params[:id];
+    if id
+      begin
+        trend = Trend.find(params[:id])
+        description = trend.description
+        categories = JSON.parse(trend.categories)
+        logger.info({ id: trend.id, description: description }.to_json)
+      rescue
+        halt 400
+      end
+
+      begin
+        results = newest_feeds(categories).to_json
+      rescue
+        halt 500, 'Lookup of BNext failed'
+      end
+    end
+
+    slim :trend
+  end
+
   # To be added: app_get_trend, app_post_trend,app_get_trend_id, app_delete_trend_id
 
   # Web App Views Routes
   get '/?', &app_get_root
   get '/feed/?', &app_get_feed
   get '/feed/:ranktype/?', &app_get_feed_ranktype
+  get '/trend/?', &app_get_trend
   # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
 end

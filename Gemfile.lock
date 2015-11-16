@@ -28,9 +28,6 @@ GEM
     eventmachine (1.0.8)
     hashdiff (0.2.3)
     hirb (0.7.3)
-    hirb-unicode (0.0.5)
-      hirb (~> 0.5)
-      unicode-display_width (~> 0.1.1)
     httparty (0.13.7)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -87,7 +84,6 @@ GEM
       sinatra (>= 1.2.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    unicode-display_width (0.1.1)
     vcr (3.0.0)
     webmock (1.22.3)
       addressable (>= 2.3.6)
@@ -101,7 +97,6 @@ DEPENDENCIES
   activerecord
   bnext_robot
   hirb
-  hirb-unicode
   httparty
   json
   minitest
@@ -115,7 +110,6 @@ DEPENDENCIES
   slim
   sqlite3
   thin
-  tilt
   tux
   vcr
   webmock
