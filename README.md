@@ -2,7 +2,7 @@
 [ ![Codeship Status for SOA-Upstart4/bnext_service](https://codeship.io/projects/98343a30-628b-0133-e9cf-1af77e49650b/status?branch=master)](https://codeship.io/projects/112642)
 
 
-## Overview
+## Overview 
 A simple version of web service that scrapes [BNext](http://www.bnext.com.tw/) data using the [bnext_robot](https://rubygems.org/gems/bnext_robot) gem.
 
 ## Repository structure
