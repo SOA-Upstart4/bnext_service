@@ -27,6 +27,8 @@ class RankList
         Hash[keys.zip(values)]
       end.to_json
 
+      # ActiveSupport::JSON.decode(@rank)
+
     elsif @rank.class == Hash
 
       error_msg = "[Bad request] please check the category and the page no is rational\n\n\n"

@@ -1,0 +1,16 @@
+.container
+
+  form action='/feed' method='get' id='user-form'
+    input type='radio' id='home-form-submit' name='ranktype' value ='weekrank' onclick='this.form.submit();' Weekly Rank
+    input type='radio' id='home-form-submit' name='ranktype' value ='dayrank' onclick='this.form.submit();' Daily Rank
+  p
+
+  -if @rank
+    table class='center'
+      tbody
+        tr
+          th Top 8 feeds
+        -for i in 0...@rank.length
+          tr
+            td
+              |<a href=#{@rank[i]['link']} target="_blank">#{@rank[i]['title']}</a>

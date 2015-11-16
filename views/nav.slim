@@ -1,0 +1,21 @@
+#header_wrapper
+  nav id='menu'
+    ul
+      - if current_page?
+        li class="current_page_item"
+          a href='/' id='home' Home
+      - else
+        li
+          a href='/' id='home' Home
+      - if current_page?('feed')
+        li class='current_page_item'
+          a href='/feed' id='feed' Feed
+      - else
+        li
+          a href='/feed' id='feed' Feed
+      - if current_page?('trend')
+        li class='current_page_item'
+          a href='/trend' id='trend' Trend
+      - else
+        li
+          a href='/trend' id='trend' Trend
