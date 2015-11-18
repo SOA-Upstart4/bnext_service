@@ -17,11 +17,6 @@ gem 'sinatra-flash'
 gem 'slim'
 gem 'tilt'
 
-gem 'hirb'
-gem 'slim'
-gem 'httparty'
-gem 'sinatra-flash'
-
 group :development, :test do
   gem 'sqlite3'
 end
