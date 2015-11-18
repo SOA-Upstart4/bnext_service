@@ -1,8 +1,10 @@
 .container
 
   form action='/feed' method='get' id='user-form'
-    input type='radio' id='home-form-submit' name='ranktype' value ='weekrank' onclick='this.form.submit();' Weekly Rank
-    input type='radio' id='home-form-submit' name='ranktype' value ='dayrank' onclick='this.form.submit();' Daily Rank
+    label for='home-form-submit-w'
+      input type='radio' id='home-form-submit-w' name='ranktype' value ='weekrank' onclick='this.form.submit();' Weekly Rank
+    label for='home-form-submit-d'
+      input type='radio' id='home-form-submit-d' name='ranktype' value ='dayrank' onclick='this.form.submit();' Daily Rank
   p
 
   -if @rank
