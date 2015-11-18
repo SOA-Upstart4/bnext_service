@@ -108,7 +108,7 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 		```
 		curl -v -H "Accept: application/json" -H "Content-type: application/json" \
 		-X POST -d "{\"categories\":[\"tech\",\"marketing\"]}" \
-		http://localhost:9292/api/v1/recent
+		http://localhost:9292/api/v1/trend
 		```
 
 
