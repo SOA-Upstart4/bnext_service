@@ -152,7 +152,7 @@ div.flash {
 /*********************************************************************************/
 form label
 {
-	display: block;
+	display: inline;
 	margin-bottom: 0.5em;
 }
 
