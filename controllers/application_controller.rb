@@ -10,7 +10,7 @@ require 'slim'
 # Simple web service to crawl Bnext webpages
 class ApplicationController < Sinatra::Base
   helpers BNextHelpers, TrendHelpers
-  enable :sessions
+  use Rack::Session::Pool
   register Sinatra::Flash
   use Rack::MethodOverride
 
