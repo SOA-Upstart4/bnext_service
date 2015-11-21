@@ -1,14 +1,32 @@
 .container
 
   form action='/trend' method='post' id='user-form'
-    input type='submit' value='GO'
+
+    input type='checkbox' name='categories[]' value='internet' 網路 
+    input type='checkbox' name='categories[]' value='tech' 科技 
+    input type='checkbox' name='categories[]' value='marketing' 行銷 
+    input type='checkbox' name='categories[]' value='startup' 創業 
+    input type='checkbox' name='categories[]' value='people' 人物 
+    input type='checkbox' name='categories[]' value='skill' 技能 
+
+    input type='submit' value='submit' id='check-submit'
+
+    javascript:
+      var checkboxes = document.getElementsByName("categories[]");
+        for (i = 0; i < checkboxes.length; i++) {
+          if (checkboxes[i].checked) {
+              categories = categories + checkboxes[i].value;
+          }
+        }
   p
+
+= categories
 
 /  - if @results
 /    table class='center'
 /      tbody
 /        tr
-/        - th Top #{@results.length} feeds
+/        - th Newest feeds in the category
 /        - @results.each do |cat, feed|
 /          tr
 /            td
