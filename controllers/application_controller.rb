@@ -168,7 +168,7 @@ class ApplicationController < Sinatra::Base
 
     if (result.code != 200)
       flash[:notice] = 'Could not process your request'
-      redirct '/trend'
+      redirect '/trend'
       return nil
     end
 
