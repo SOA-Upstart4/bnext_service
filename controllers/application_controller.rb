@@ -100,8 +100,8 @@ class ApplicationController < Sinatra::Base
       halt 500, 'Lookup of BNext failed'
     end
 
-    { id: trend.id, description: description,
-      categories: categories, newest: results }.to_json
+    #{ id: trend.id, description: description,
+    #  categories: categories, newest: results }.to_json
   end
 
   delete_trend = lambda do
