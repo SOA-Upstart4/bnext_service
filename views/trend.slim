@@ -1,16 +1,37 @@
 .container
 
-  form action='/trend' method='post' id='user-form'
-    input type='submit' value='GO'
-  p
+  form action='/trend' method='post' id='trend-form'
+    input type='radio' id='home-form-submit' name='trend_feed' value ='internet' onclick='this.form.submit();' Internet
+    input type='radio' id='home-form-submit' name='trend_feed' value ='tech' onclick='this.form.submit();' Technology
+    input type='radio' id='home-form-submit' name='trend_feed' value ='marketing' onclick='this.form.submit();' Marketing
+    input type='radio' id='home-form-submit' name='trend_feed' value ='startup' onclick='this.form.submit();' Startup
+    input type='radio' id='home-form-submit' name='trend_feed' value ='people' onclick='this.form.submit();' People
+    input type='radio' id='home-form-submit' name='trend_feed' value ='skill' onclick='this.form.submit();' Skill
+p
 
-/  - if @results
-/    table class='center'
-/      tbody
-/        tr
-/        - th Top #{@results.length} feeds
+  - if @results
+    table class='center'
+      tbody
+        tr
+          th FEEDS
 /        - @results.each do |cat, feed|
-/          tr
-/            td
-/              |#{cat}: <a href=#{feed[i]['link']} target="_blank">#{feed['title']}</a>
-/          end
+          tr
+           td
+              huihiuh
+
+
+/form action="/trend/#{@id}" method='post' id='delete-form'
+/  - if @action == :update
+/      input type='submit' name='_method' value='delete' class='delete'
+/  - if @results
+/      h1 Results
+/        table class='center'
+/          tbody
+/            tr
+/              th Feeds
+/            - @results.each do |cat, feed|
+/                tr
+/                  td
+/                    = "#{results}"
+/  - else
+/    p "Choose again!"

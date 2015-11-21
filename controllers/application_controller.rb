@@ -28,7 +28,7 @@ class ApplicationController < Sinatra::Base
   end
 
   configure :production do
-    set :api_server, 'https://trendcrawl.herokuapp.com/'
+    set :api_server, 'https://trendcrawl.herokuapp.com'
   end
 
   configure :production, :development do
@@ -77,7 +77,7 @@ class ApplicationController < Sinatra::Base
 
     if trend.save
       status 201
-      redirect "api/v1/trend/#{trend.id}", 303
+      redirect "#{settings.api_ver}/trend/#{trend.id}", 303
     else
       halt 500, 'Error saving trend request to the database'
     end
@@ -95,13 +95,13 @@ class ApplicationController < Sinatra::Base
     end
 
     begin
-      results = newest_feeds(categories).to_json
+      results = newest_feeds(categories)
     rescue
       halt 500, 'Lookup of BNext failed'
     end
 
-    #{ id: trend.id, description: description,
-    #  categories: categories, newest: results }.to_json
+    { id: trend.id, description: description,
+      categories: categories, newest: results }.to_json
   end
 
   delete_trend = lambda do
@@ -150,33 +150,65 @@ class ApplicationController < Sinatra::Base
   end
 
   app_get_trend = lambda do
-    id = params[:id];
-    if id
-      begin
-        trend = Trend.find(params[:id])
-        description = trend.description
-        categories = JSON.parse(trend.categories)
-        logger.info({ id: trend.id, description: description }.to_json)
-      rescue
-        halt 400
-      end
-
-      begin
-        results = newest_feeds(categories).to_json
-      rescue
-        halt 500, 'Lookup of BNext failed'
-      end
-    end
-
+    @action = :create
     slim :trend
   end
 
-  # To be added: app_get_trend, app_post_trend,app_get_trend_id, app_delete_trend_id
+  app_post_trend = lambda do
+    request_url = "#{settings.api_server}/#{settings.api_ver}/trend"
+    # description = params[:description].split("\r\n")
+    categories = params[:trend_feed]
+    params_h = {
+      # description: description,
+      categories: ["#{categories}"]
+    }
+
+    options = {
+      body: params_h.to_json,
+      headers: { 'Content-Type' => 'application/json' }
+    }
+
+    result = HTTParty.post(request_url, options)
+
+    if (result.code != 200)
+      flash[:notice] = 'Could not process your request'
+      redirct '/trend'
+      return nil
+    end
+
+    id = result.request.last_uri.path.split('/').last
+    session[:results] = result.to_json
+    session[:action] = :create
+    redirect "/trend/#{id}"
+  end
+
+  app_get_trend_id = lambda do
+    if session[:action] == :create
+      @results = JSON.parse(session[:results])
+    else
+      request_url = "#{settings.api_server}/#{settings.api_ver}/trend/#{params[:id]}"
+      options = { headers: { 'Content-Type' => 'application/json' } }
+      @results = HTTParty.post(request_url, options)
+      if (result.code != 200)
+        flash[:notice] = 'Could not process your request'
+        redirct '/trend'
+      end
+    end
+
+    @id = params[:id]
+    @action = :update
+    #@description = @results['description']
+    @categories = @results['categories']
+    slim :trend
+  end
+  # To be added: app_delete_trend_id
 
   # Web App Views Routes
   get '/?', &app_get_root
   get '/feed/?', &app_get_feed
   get '/feed/:ranktype/?', &app_get_feed_ranktype
-  get '/trend/?', &app_get_trend
-  # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
+  get '/trend', &app_get_trend
+  post '/trend', &app_post_trend
+  get '/trend/:id', &app_get_trend_id
+  # To be added: delete '/trend/:id'
 end
