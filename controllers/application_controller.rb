@@ -156,7 +156,7 @@ class ApplicationController < Sinatra::Base
 
   app_post_trend = lambda do
     request_url = "#{settings.api_server}/#{settings.api_ver}/trend"
-    categories = params[:categories].join(',')
+    categories = params[:categories]
     params_h = { categories: categories }
 
     options = {
@@ -204,7 +204,7 @@ class ApplicationController < Sinatra::Base
   get '/feed/?', &app_get_feed
   get '/feed/:ranktype/?', &app_get_feed_ranktype
   get '/trend/?', &app_get_trend
-  post '/trend', &app_post_trend
-  get '/trend/:id', &app_get_trend_id
+  post '/trend/?', &app_post_trend
+  get '/trend/:id/?', &app_get_trend_id
   # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
 end
