@@ -77,7 +77,7 @@ class ApplicationController < Sinatra::Base
 
     if trend.save
       status 201
-      redirect "api/v1/trend/#{trend.id}", 303
+      redirect "#{settings.api_ver}/trend/#{trend.id}", 303
     else
       halt 500, 'Error saving trend request to the database'
     end
@@ -95,13 +95,13 @@ class ApplicationController < Sinatra::Base
     end
 
     begin
-      results = newest_feeds(categories).to_json
+      results = newest_feeds(categories)
     rescue
       halt 500, 'Lookup of BNext failed'
     end
 
-    #{ id: trend.id, description: description,
-    #  categories: categories, newest: results }.to_json
+    { id: trend.id, description: description,
+      categories: categories, newest: results }.to_json
   end
 
   delete_trend = lambda do
