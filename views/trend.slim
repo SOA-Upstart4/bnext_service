@@ -22,7 +22,7 @@
               = cat
             td
               |<a href=#{feed['link']} target="_blank">#{feed['title']}</a>
-              
+
   form action="/trend/#{@id}" method='post' id='delete-form'
    - if @action == :update
     input type='submit' name='_method' value='delete' class='delete'
