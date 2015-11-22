@@ -95,7 +95,10 @@ class ApplicationController < Sinatra::Base
     end
 
     begin
-      results = newest_feeds(categories).to_json
+      results = Hash.new
+      feeds_dict = newest_feeds(categories)
+      feeds_dict.map { |k, v| results[k] = v }
+      results = results.to_json
     rescue
       halt 500, 'Lookup of BNext failed'
     end
@@ -106,7 +109,7 @@ class ApplicationController < Sinatra::Base
 
   delete_trend = lambda do
     trend = Trend.destroy(params[:id])
-    status(trend > 0 ? 200 : 404)
+    status(trend.id > 0 ? 200 : 404)
   end
 
   # Web API Routes
