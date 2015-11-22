@@ -10,7 +10,7 @@ require 'slim'
 # Simple web service to crawl Bnext webpages
 class ApplicationController < Sinatra::Base
   helpers BNextHelpers, TrendHelpers
-  enable :sessions
+  use Rack::Session::Pool
   register Sinatra::Flash
   use Rack::MethodOverride
 
@@ -28,7 +28,7 @@ class ApplicationController < Sinatra::Base
   end
 
   configure :production do
-    set :api_server, 'https://trendcrawl.herokuapp.com/'
+    set :api_server, 'https://trendcrawl.herokuapp.com'
   end
 
   configure :production, :development do
@@ -150,24 +150,50 @@ class ApplicationController < Sinatra::Base
   end
 
   app_get_trend = lambda do
-    id = params[:id];
-    if id
-      begin
-        trend = Trend.find(params[:id])
-        description = trend.description
-        categories = JSON.parse(trend.categories)
-        logger.info({ id: trend.id, description: description }.to_json)
-      rescue
-        halt 400
-      end
+    @action = :create
+    slim :trend
+  end
 
-      begin
-        results = newest_feeds(categories).to_json
-      rescue
-        halt 500, 'Lookup of BNext failed'
+  app_post_trend = lambda do
+    request_url = "#{settings.api_server}/#{settings.api_ver}/trend"
+    categories = params[:categories]
+    params_h = { categories: categories }
+
+    options = {
+      body: params_h.to_json,
+      headers: { 'Content-Type' => 'application/json' }
+    }
+
+    result = HTTParty.post(request_url, options)
+
+    if (result.code != 200)
+      flash[:notice] = 'Could not process your request'
+      redirect '/trend'
+      return nil
+    end
+
+    id = result.request.last_uri.path.split('/').last
+    session[:results] = result.to_json
+    session[:action] = :create
+    redirect "/trend/#{id}"
+  end
+
+  app_get_trend_id = lambda do
+    if session[:action] == :create
+      @results = JSON.parse(session[:results])
+    else
+      request_url = "#{settings.api_server}/#{settings.api_ver}/trend/#{params[:id]}"
+      options =  { headers: { 'Content-Type' => 'application/json' } }
+      @results = HTTParty.get(request_url, options)
+      if @results.code != 200
+        flash[:notice] = 'Cannot find record'
+        redirect '/trend'
       end
     end
 
+    @id = params[:id]
+    @action = :update
+    @categories = @results['categories']
     slim :trend
   end
 
@@ -178,5 +204,7 @@ class ApplicationController < Sinatra::Base
   get '/feed/?', &app_get_feed
   get '/feed/:ranktype/?', &app_get_feed_ranktype
   get '/trend/?', &app_get_trend
+  post '/trend/?', &app_post_trend
+  get '/trend/:id/?', &app_get_trend_id
   # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
 end
