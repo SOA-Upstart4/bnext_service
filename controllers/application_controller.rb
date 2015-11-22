@@ -197,6 +197,13 @@ class ApplicationController < Sinatra::Base
     slim :trend
   end
 
+  app_delete_trend_id = lambda do
+    request_url = "#{settings.api_server}/#{settings.api_ver}/trend/#{params[:id]}"
+    HTTParty.delete(request_url)
+    flash[:notice] = 'record of trend deleted'
+    redirect '/trend'
+  end
+
   # To be added: app_get_trend, app_post_trend,app_get_trend_id, app_delete_trend_id
 
   # Web App Views Routes
@@ -206,5 +213,6 @@ class ApplicationController < Sinatra::Base
   get '/trend/?', &app_get_trend
   post '/trend/?', &app_post_trend
   get '/trend/:id/?', &app_get_trend_id
+  delete '/trend/:id/?', &app_delete_trend_id
   # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
 end
