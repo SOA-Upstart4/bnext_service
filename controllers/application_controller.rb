@@ -95,8 +95,13 @@ class ApplicationController < Sinatra::Base
     end
 
     begin
+<<<<<<< HEAD
       results = Hash.new
       feeds_dict = newest_feeds(categories)
+=======
+      feeds_dict = newest_feeds(categories)
+      results = Hash.new
+>>>>>>> 35e173f8b51d043b0c1ef90f4a959c658f3d4e93
       feeds_dict.map { |k, v| results[k] = v }
       results = results.to_json
     rescue
