@@ -95,7 +95,10 @@ class ApplicationController < Sinatra::Base
     end
 
     begin
-      results = newest_feeds(categories).to_json
+      feeds_dict = newest_feeds(categories)
+      results = Hash.new
+      feeds_dict.map { |k, v| results[k] = v }
+      results = results.to_json
     rescue
       halt 500, 'Lookup of BNext failed'
     end
@@ -105,8 +108,52 @@ class ApplicationController < Sinatra::Base
   end
 
   delete_trend = lambda do
-    trend = Trend.destroy(params[:id])
-    status(trend > 0 ? 200 : 404)
+    trend = Trend.delete(params[:id])
+    status(trend 0 ? 200 : 404)
+  end
+
+  post_article = lambda do
+    content_type :json, 'charset' => 'utf-8'
+    begin
+      req = JSON.parse(request.body.read)
+      logger.info req
+    rescue
+      halt 400
+    end
+
+    article = Article.new(
+        title: req['title'],
+        author: req['author'],
+        date: req['date'],
+        tags: req['tags'].to_json,
+        link: req['link']
+      )
+
+    if article.save
+      status 201
+    else
+      halt 500, 'Error saving article request to the database'
+    end
+  end
+
+  get_article_id = lambda do
+    content_type :json, 'charset' => 'utf-8'
+    begin
+      article = Article.find(params[:id])
+      resp = Hash.new
+      resp['title'] = article.title
+      resp['author'] = article.author
+      resp['date'] = article.date
+      resp['tags'] = JSON.parse(article.tags)
+      resp['link'] = article.link
+    rescue
+      halt 500, 'Lookup of Articles failed'
+    end
+  end
+
+  delete_article = lambda do
+    article_cnt = Article.delete(params[:id])
+    status(article_cnt > 0 ? 200 : 404)
   end
 
   # Web API Routes
@@ -114,7 +161,12 @@ class ApplicationController < Sinatra::Base
   get '/api/v1/:ranktype/?', &get_feed_ranktype
   get '/api/v1/trend/:id/?', &get_trend
   post '/api/v1/trend/?', &post_trend
-  delete '/api/v1/trend/:id/', &delete_trend
+
+  delete '/api/v1/trend/:id/?', &delete_trend
+  post '/api/v1/article/?', &post_article
+  get '/api/v1/article/:id/?', &get_article_id
+  delete '/api/v1/article/:id/?', &delete_article
+
 
 # Web app views
   app_get_root = lambda do
@@ -203,6 +255,7 @@ class ApplicationController < Sinatra::Base
     flash[:notice] = 'record of trend deleted'
     redirect '/trend'
   end
+
   # To be added: app_get_trend, app_post_trend,app_get_trend_id, app_delete_trend_id
 
   # Web App Views Routes
