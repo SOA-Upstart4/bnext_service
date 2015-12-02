@@ -19,6 +19,7 @@ gem 'tilt'
 
 group :development, :test do
   gem 'sqlite3'
+  gem 'sqlite3_ar_regexp', '~> 2.1'
 end
 
 group :production do
