@@ -158,7 +158,7 @@ class ApplicationController < Sinatra::Base
   end
 
   get_article_info = lambda do
-    content_type :json, 'charset' => 'urf-8'
+    content_type :json, 'charset' => 'utf-8'
     begin
       keyword = "Apple" #placeholder keyword
       article_selected = Article.where("tags REGEXP '[^\s]#{keyword}[^\s]'")
