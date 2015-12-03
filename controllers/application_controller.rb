@@ -168,6 +168,7 @@ class ApplicationController < Sinatra::Base
     rescue
       halt 400
     end
+  end
 
   # Web API Routes
   get '/api/v1/?', &get_root
