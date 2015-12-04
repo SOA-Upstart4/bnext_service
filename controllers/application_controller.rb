@@ -147,6 +147,7 @@ class ApplicationController < Sinatra::Base
       resp['date'] = article.date
       resp['tags'] = JSON.parse(article.tags)
       resp['link'] = article.link
+      resp.to_json
     rescue
       halt 500, 'Lookup of Articles failed'
     end
@@ -157,14 +158,32 @@ class ApplicationController < Sinatra::Base
     status(article_cnt > 0 ? 200 : 404)
   end
 
-  get_article_info = lambda do
+  # get_article_info = lambda do
+  #   content_type :json, 'charset' => 'utf-8'
+  #   begin
+  #     keyword = "Apple" #placeholder keyword
+  #     article_selected = Article.where("tags REGEXP '[^\s]#{keyword}[^\s]'")
+  #     article_count = article_selected.count
+  #     article_title = article_selected.pluck(params[:title])
+  #     article_link = article_selected.pluck(params[:link])
+  #   rescue
+  #     halt 400
+  #   end
+  # end
+
+  find_articles = lambda do
     content_type :json, 'charset' => 'utf-8'
+    attrs = ['tags', 'title', 'author']
     begin
-      keyword = "Apple" #placeholder keyword
-      article_selected = Article.where("tags REGEXP '[^\s]#{keyword}[^\s]'")
-      article_count = article_selected.count
-      article_title = article_selected.pluck(params[:title])
-      article_link = article_selected.pluck(params[:link])
+      h = Hash.new
+      attrs.each do |x|
+        if params.has_key? x
+          Article.where("#{x} LIKE ?", "%#{params[x]}%").all.each do |article|
+            h[article.id] = article
+          end
+        end
+      end
+      h.values.to_json
     rescue
       halt 400
     end
@@ -178,10 +197,12 @@ class ApplicationController < Sinatra::Base
 
   delete '/api/v1/trend/:id/?', &delete_trend
   post '/api/v1/article/?', &post_article
+
+  get '/api/v1/article/filter?', &find_articles
   get '/api/v1/article/:id/?', &get_article_id
   delete '/api/v1/article/:id/?', &delete_article
 
-  get '/api/v1/article_info/?', &get_article_info
+  # get '/api/v1/article_info/?', &get_article_info
 
 
 # Web app views
