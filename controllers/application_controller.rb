@@ -24,7 +24,6 @@ class ApplicationController < Sinatra::Base
   end
 
   configure :development, :test do
-    require 'sqlite3_ar_regexp' #for development sqlite3 db
     set :api_server, 'http://localhost:9292'
   end
 
@@ -45,14 +44,22 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  ######################################################################################
+  #                                                                                    #
+  #                                   WEB APIs                                         #
+  #                                                                                    #
+  ######################################################################################
+
   ROOT_MSG = 'This is version 0.0.1. See documentation at its ' \
       '<a href="https://github.com/SOA-Upstart4/bnext_service">' \
       'Github repo</a>'
 
+  ###   GET /api/v1/
   get_root = lambda do
     ROOT_MSG
   end
 
+  ###   GET /api/v1/:ranktype/
   get_feed_ranktype = lambda do
     content_type :json, 'charset' => 'utf-8'
     cat = 'tech'
@@ -63,6 +70,7 @@ class ApplicationController < Sinatra::Base
     get_ranks(params[:ranktype], cat, page_no).to_json
   end
 
+  ### POST /api/v1/trend/
   post_trend = lambda do
     content_type :json, 'charset' => 'utf-8'
     begin
@@ -84,6 +92,7 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  ### GET /api/v1/trend/:id/
   get_trend = lambda do
     content_type :json, 'charset' => 'utf-8'
     begin
@@ -104,15 +113,15 @@ class ApplicationController < Sinatra::Base
       halt 500, 'Lookup of BNext failed'
     end
 
-    #{ id: trend.id, description: description,
-    #  categories: categories, newest: results }.to_json
   end
 
+  ### DELETE /api/v1/trend/:id/
   delete_trend = lambda do
     trend = Trend.delete(params[:id])
     status(trend 0 ? 200 : 404)
   end
 
+  ### POST /api/v1/article/
   post_article = lambda do
     content_type :json, 'charset' => 'utf-8'
     begin
@@ -137,6 +146,7 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  ### GET /api/v1/article/:id/
   get_article_id = lambda do
     content_type :json, 'charset' => 'utf-8'
     begin
@@ -153,24 +163,13 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  ### DELETE /api/v1/article/:id/
   delete_article = lambda do
     article_cnt = Article.delete(params[:id])
     status(article_cnt > 0 ? 200 : 404)
   end
 
-  # get_article_info = lambda do
-  #   content_type :json, 'charset' => 'utf-8'
-  #   begin
-  #     keyword = "Apple" #placeholder keyword
-  #     article_selected = Article.where("tags REGEXP '[^\s]#{keyword}[^\s]'")
-  #     article_count = article_selected.count
-  #     article_title = article_selected.pluck(params[:title])
-  #     article_link = article_selected.pluck(params[:link])
-  #   rescue
-  #     halt 400
-  #   end
-  # end
-
+  ### GET /api/v1/article/filter?tags=&author=&title=
   find_articles = lambda do
     content_type :json, 'charset' => 'utf-8'
     attrs = ['tags', 'title', 'author']
@@ -189,34 +188,21 @@ class ApplicationController < Sinatra::Base
     end
   end
 
-  # Web API Routes
-  get '/api/v1/?', &get_root
-  get '/api/v1/:ranktype/?', &get_feed_ranktype
-  get '/api/v1/trend/:id/?', &get_trend
-  post '/api/v1/trend/?', &post_trend
+  ######################################################################################
+  #                                                                                    #
+  #                                   WEB VIEWs                                        #
+  #                                                                                    #
+  ######################################################################################
 
-  delete '/api/v1/trend/:id/?', &delete_trend
-  post '/api/v1/article/?', &post_article
-
-  get '/api/v1/article/filter?', &find_articles
-  get '/api/v1/article/:id/?', &get_article_id
-  delete '/api/v1/article/:id/?', &delete_article
-
-  # get '/api/v1/article_info/?', &get_article_info
-
-
-# Web app views
+  # Web app views
   app_get_root = lambda do
     slim :home
   end
 
   app_get_feed = lambda do
     @ranktype = params[:ranktype]
-    # @cat = params['cat'] if params.has_key? 'cat'
-    # @page_no = params['page'] if params.has_key? 'page'
     if @ranktype
       redirect "/feed/#{@ranktype}"
-      # To be included: redirect to get feeds in specific cat/page
       return nil
     end
 
@@ -293,7 +279,25 @@ class ApplicationController < Sinatra::Base
     redirect '/trend'
   end
 
-  # To be added: app_get_trend, app_post_trend,app_get_trend_id, app_delete_trend_id
+  ######################################################################################
+  #                                                                                    #
+  #                                DECLARATIONS                                        #
+  #                                                                                    #
+  ######################################################################################
+
+  # Web API Routes
+  get '/api/v1/?', &get_root
+  post '/api/v1/article/?', &post_article
+  get '/api/v1/article/filter?', &find_articles
+  get '/api/v1/article/:id/?', &get_article_id
+  delete '/api/v1/article/:id/?', &delete_article
+
+  # useless functions
+  get '/api/v1/:ranktype/?', &get_feed_ranktype
+  get '/api/v1/trend/:id/?', &get_trend
+  post '/api/v1/trend/?', &post_trend
+  delete '/api/v1/trend/:id/?', &delete_trend
+
 
   # Web App Views Routes
   get '/?', &app_get_root
@@ -303,5 +307,5 @@ class ApplicationController < Sinatra::Base
   post '/trend/?', &app_post_trend
   get '/trend/:id/?', &app_get_trend_id
   delete '/trend/:id/?', &app_delete_trend_id
-  # To be added: get '/trend', post '/trend', get '/trend/:id', delete '/trend/:id'
+
 end
