@@ -131,19 +131,24 @@ class ApplicationController < Sinatra::Base
       halt 400
     end
 
-    article = Article.new(
-        title: req['title'],
-        author: req['author'],
-        date: req['date'],
-        tags: req['tags'].to_json,
-        link: req['link']
-      )
+    if Article.where("link LIKE ?", "%#{req['link']}%").length == 0
+      article = Article.new(
+          title: req['title'],
+          author: req['author'],
+          date: req['date'],
+          tags: req['tags'].to_json,
+          link: req['link']
+        )
 
-    if article.save
-      status 201
+      if article.save
+        status 201
+      else
+        halt 500, 'Error saving article request to the database'
+      end
     else
-      halt 500, 'Error saving article request to the database'
+      status 201
     end
+
   end
 
   ### GET /api/v1/article/
