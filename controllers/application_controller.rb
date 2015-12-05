@@ -146,6 +146,21 @@ class ApplicationController < Sinatra::Base
     end
   end
 
+  ### GET /api/v1/article/
+  get_article_by_viewid = lambda do
+    content_type :json, 'charset' => 'utf-8'
+
+    begin
+      if params.has_key? 'viewid'
+        BNextRobot.new._extract_feed("/article/view/id/#{params['viewid']}").to_hash.to_json
+      else
+        {}.to_json
+      end
+    rescue
+      halt 404
+    end
+  end
+
   ### GET /api/v1/article/:id/
   get_article_id = lambda do
     content_type :json, 'charset' => 'utf-8'
@@ -288,6 +303,7 @@ class ApplicationController < Sinatra::Base
   # Web API Routes
   get '/api/v1/?', &get_root
   post '/api/v1/article/?', &post_article
+  get '/api/v1/article/?', &get_article_by_viewid
   get '/api/v1/article/filter?', &find_articles
   get '/api/v1/article/:id/?', &get_article_id
   delete '/api/v1/article/:id/?', &delete_article
