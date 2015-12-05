@@ -72,6 +72,9 @@ GEM
       temple (~> 0.7.3)
       tilt (>= 1.3.3, < 2.1)
     sqlite3 (1.3.11)
+    sqlite3_ar_regexp (2.1.0)
+      activerecord (>= 3.2, < 5)
+      sqlite3
     temple (0.7.6)
     thread_safe (0.3.5)
     tilt (2.0.1)
@@ -110,6 +113,7 @@ DEPENDENCIES
   sinatra-flash
   slim
   sqlite3
+  sqlite3_ar_regexp (~> 2.1)
   tilt
   tux
   vcr
