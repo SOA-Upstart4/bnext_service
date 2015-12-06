@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
-gem 'thin'
+gem 'puma'
 gem 'json'
 gem 'bnext_robot'
 
@@ -17,13 +17,9 @@ gem 'sinatra-flash'
 gem 'slim'
 gem 'tilt'
 
-gem 'hirb'
-gem 'slim'
-gem 'httparty'
-gem 'sinatra-flash'
-
 group :development, :test do
   gem 'sqlite3'
+  gem 'sqlite3_ar_regexp', '~> 2.1'
 end
 
 group :production do
