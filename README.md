@@ -166,8 +166,11 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 	| `/api/v1/weekrank` | API | `GET` | N/A | Getting weekly hot feeds
 	| `/api/v1/feed` | API | `GET` | `cat={CATEGORY}&page={PAGENO}` | Getting feeds under a specific category at specific page number
 	| `/api/v1/trend/{ID}` | API | `GET` | N/A | Finding trend information with specific ID
-	| `/api/v1/trend` | API | `POST` | `{ "description": "{DESC}", categories: ["{CAT1}", "{CAT2}", ... , "{CATn}"] }` | TBD
+	| `/api/v1/trend` | API | `POST` | `{ description: "{DESC}", categories: ["{CAT1}", "{CAT2}"] }` | TBD
 	| `/api/v1/trend/{ID}` | API | `DELETE` | N/A | Deleting trend information with specific ID
+	| `/api/v1/article` | API | `POST` | `{ body: FEED.to_json }` | Posting article to the database
+	| `/api/v1/article` | API | `GET` | `viewid=` | Getting article meta data in json format
+	| `/api/v1/article/filter` | API | `GET` | `tags=&author=&title=` | Retrieving articles that match the given conditions
 	| `/` | GUI | `GET` | N/A |
 	| `/feed/` | GUI | `GET` | N/A | 
 	
