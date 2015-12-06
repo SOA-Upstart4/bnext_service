@@ -146,7 +146,7 @@ class ApplicationController < Sinatra::Base
         halt 500, 'Error saving article request to the database'
       end
     else
-      status 201
+      status 208, 'This article has been posted before'
     end
 
   end
