@@ -28,7 +28,7 @@ class ApplicationController < Sinatra::Base
   end
 
   configure :production do
-    set :api_server, 'https://trendcrawl.herokuapp.com'
+    set :api_server, 'http://trendcrawl.herokuapp.com'
   end
 
   configure :production, :development do
