@@ -131,18 +131,38 @@ class ApplicationController < Sinatra::Base
       halt 400
     end
 
-    article = Article.new(
-        title: req['title'],
-        author: req['author'],
-        date: req['date'],
-        tags: req['tags'].to_json,
-        link: req['link']
-      )
+    if Article.where("link LIKE ?", "%#{req['link']}%").length == 0
+      article = Article.new(
+          title: req['title'],
+          author: req['author'],
+          date: req['date'],
+          tags: req['tags'].to_json,
+          link: req['link']
+        )
 
-    if article.save
-      status 201
+      if article.save
+        status 201
+      else
+        halt 500, 'Error saving article request to the database'
+      end
     else
-      halt 500, 'Error saving article request to the database'
+      status 201
+    end
+
+  end
+
+  ### GET /api/v1/article/
+  get_article_by_viewid = lambda do
+    content_type :json, 'charset' => 'utf-8'
+
+    begin
+      if params.has_key? 'viewid'
+        BNextRobot.new._extract_feed("/article/view/id/#{params['viewid']}").to_hash.to_json
+      else
+        {}.to_json
+      end
+    rescue
+      halt 404
     end
   end
 
@@ -288,6 +308,7 @@ class ApplicationController < Sinatra::Base
   # Web API Routes
   get '/api/v1/?', &get_root
   post '/api/v1/article/?', &post_article
+  get '/api/v1/article/?', &get_article_by_viewid
   get '/api/v1/article/filter?', &find_articles
   get '/api/v1/article/:id/?', &get_article_id
   delete '/api/v1/article/:id/?', &delete_article
