@@ -8,7 +8,7 @@ describe 'Checking post articles to database' do
   # end
 
   ### Testing POST /api/v1/article/
-  it 'should first save article into DB then filter' do
+  it 'should save article into DB' do
     header = { 'CONTENT_TYPE' => 'application/json' }
     body = {
       title: '[專訪] 全球最大停車App創辦人：並非停車位不夠，只是你找不到',
@@ -46,15 +46,6 @@ describe 'Checking post articles to database' do
     end
     last_response.must_be :ok?
     JSON.parse(last_response.body).must_equal(JSON.parse(Answer::SPECIFIC_ARTICLE))
-  end
-
-  ### Testing GET /api/v1/article/:id/
-  it 'should return article in database' do
-    VCR.use_cassette('get_database_article') do
-      get '/api/v1/article/38'
-    end
-    last_response.must_be :ok?
-    # JSON.parse(last_response.body).must_equal(JSON.parse(Answer::SPECIFIC_ARTICLE))
   end
 
   ### Testing GET /api/v1/article/filter?tags=
@@ -107,4 +98,6 @@ describe 'Checking post articles to database' do
     last_response.must_be :ok?
     JSON.parse(last_response.body).must_equal Answer::FILTER_ARTICLE
   end
+
+    ### Testing GET /api/v1/article/:id/
 end
