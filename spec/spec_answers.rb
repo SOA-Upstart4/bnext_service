@@ -220,17 +220,4 @@ class Answer
 			"\"content\":\"\\r\\n            虛擬實境到底有多火熱？最近關於VR的應用案例層出不窮，包括紐約時報用VR拍攝新聞紀實影片、中職球隊Lamigo用VR轉播冠軍系列賽事、U2樂團與Apple合作拍攝VR音樂錄影帶…等。現在就連NBA都打算運用VR技術，強化球迷的娛樂體驗。NBA今年的冠軍隊伍金州勇士隊（Golden State Warriors），預計在太平洋時間27日19:30（台灣時間28日10:30）進行2016年NBA賽事的開幕戰，並將全程使用VR即時轉播，讓不能到場的球迷恍若親臨現場！\\n\\n\\n（勇士隊是今年NBA球季的總冠軍隊伍。圖片來源：NBA官網。）\\n\\nNBA與VR影音公司NextVR合作這次的計畫。球迷可以在Oculus的APP Store上下載NextVR的APP，再使用Samsung Gear VR裝置（須搭配Samsung Note 4或是Galaxy S6手機），就可以即時連線觀賞這場來自加州奧克蘭甲骨文體育館（Oracle Arena）勇士隊主場的精采賽事。\\n\\n用VR轉播看這場球賽，不只能體驗360度無死角的魅力，VR攝影機的擺放位置（也就是球迷的視角）還會被安排在第一排的「特等席」，讓球迷能夠近距離觀賽。\\n\\n今年春天，NBA總裁（Adam Silver）蕭華就曾被報導拜會史丹佛大學的VR專家巴倫森（Jeremy Bailenson），討論未來在體育賽事中使用這項技術的可行性。事實上，之前NBA的球賽也曾經用VR轉播過，甚至去年的冠軍賽也有使用VR攝影記錄賽事，但這次的開幕戰，則是首度由NBA官方名義帶給球迷這場體驗，意義自然不同。\\n\\n對於金州勇士隊而言，使用VR技術似乎是再自然不過的事。勇士隊向來樂於擁抱新科技，以幫助他們接觸到更廣泛的球迷，帶給他們更好的體驗。勇士隊數位行銷副總裁勞爾（Kenny Lauer）先前就曾說過，勇士隊的目標是要強化所有球迷的觀賽經驗，這不只是關乎籃球，而是勇士隊要如何成為一間「娛樂公司」。\\n\\n資料來源：VentureBeat\\n\\r\\n        \"," +
 			"\"imgs\":[\"https://3.bp.blogspot.com/-FKiHdCGeNsU/Vi_ecbmwvAI/AAAAAAABXeQ/UqzPfRYsPws/s600/061615_gm6_recap_760.jpg\"]" +
 		"}"
-
-	FILTER_ARTICLE = [
-		{
-			"id"=>38,
-			"title"=>"[專訪] 全球最大停車App創辦人：並非停車位不夠，只是你找不到",
-			"author"=>"李欣宜",
-			"date"=>"2015/10/27",
-			"tags"=>"[\"智慧城市\",\"車聯網\",\"停車應用\",\"Parkme\",\"Sam Friedman\"]",
-			"link"=>"http://www.bnext.com.tw/article/view/id/37797",
-			"created_at"=>"2015-12-06T12:49:16.084Z",
-			"updated_at"=>"2015-12-06T12:49:16.084Z"
-		}
-	]
 end
