@@ -134,7 +134,7 @@ describe 'Checking post articles to database' do
     JSON.parse(last_response.body).must_equal []
   end
 
-  ### Testing GET /api/v1/article/:id/
+  ### Testing bad search by database id
   it 'should return article by database id' do
     most_recent_id = Article.order(:created_at).last
     VCR.use_cassette('get_article_by_db_id') do
