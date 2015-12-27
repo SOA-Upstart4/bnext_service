@@ -202,7 +202,7 @@ class ApplicationController < Sinatra::Base
       end
       a = a.where("date >= ?", "#{params['date_from']}") if params.has_key? 'date_from'
       a = a.where("date <= ?", "#{params['date_to']}") if params.has_key? 'date_to'
-      a.map(:to_json)
+      a.map { |article| article.to_json }
     rescue
       halt 400
     end
