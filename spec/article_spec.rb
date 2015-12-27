@@ -22,7 +22,7 @@ describe 'Checking post articles to database' do
 
     ### Testing GET /api/v1/article/filter?tags=
     VCR.use_cassette('filter_tags_article') do
-      get '/api/v1/article/filter?tags=parkme'
+      get '/api/v1/article/filter?tags=Parkme'
     end
     last_response.must_be :ok?
 
@@ -53,6 +53,12 @@ describe 'Checking post articles to database' do
 
     VCR.use_cassette('filter_article') do
       get uri
+    end
+    last_response.must_be :ok?
+
+    ### Testing GET /api/v1/article/filter?date_from=
+    VCR.use_cassette('filter_date_from_article') do
+      get '/api/v1/article/filter?date_from=2015/10/27'
     end
     last_response.must_be :ok?
 
