@@ -59,7 +59,7 @@ class ApplicationController < Sinatra::Base
     ROOT_MSG
   end
 
-  ###   GET /api/v1/:ranktype/
+  ###   GET /api/v1/:ranktype?cat=&page=
   get_feed_ranktype = lambda do
     content_type :json, 'charset' => 'utf-8'
     cat = 'tech'
@@ -189,20 +189,20 @@ class ApplicationController < Sinatra::Base
     status(article_cnt > 0 ? 200 : 404)
   end
 
-  ### GET /api/v1/article/filter?tags=&author=&title=
+  ### GET /api/v1/article/filter?tags=&author=&title=&date_from=&date_to=
   find_articles = lambda do
     content_type :json, 'charset' => 'utf-8'
-    attrs = ['tags', 'title', 'author']
+    filters = ['tags', 'title', 'author']
     begin
-      h = Hash.new
-      attrs.each do |x|
-        if params.has_key? x
-          Article.where("#{x} LIKE ?", "%#{params[x]}%").all.each do |article|
-            h[article.id] = article
-          end
+      a = Article.all
+      filters.each do |filter|
+        if params.has_key? filter
+          a = a.where("#{filter} ILIKE ?", "%#{params[filter]}%")
         end
       end
-      h.values.to_json
+      a = a.where("date >= ?", "#{params['date_from']}") if params.has_key? 'date_from'
+      a = a.where("date <= ?", "#{params['date_to']}") if params.has_key? 'date_to'
+      a.map { |article| article.to_json }
     rescue
       halt 400
     end
@@ -309,7 +309,7 @@ class ApplicationController < Sinatra::Base
   get '/api/v1/?', &get_root
   post '/api/v1/article/?', &post_article
   get '/api/v1/article/?', &get_article_by_viewid
-  get '/api/v1/article/filter?', &find_articles
+  get '/api/v1/article/filter/?', &find_articles
   get '/api/v1/article/:id/?', &get_article_id
   delete '/api/v1/article/:id/?', &delete_article
 

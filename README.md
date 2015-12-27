@@ -170,9 +170,48 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 	| `/api/v1/trend/{ID}` | API | `DELETE` | N/A | Deleting trend information with specific ID
 	| `/api/v1/article` | API | `POST` | `{ body: FEED.to_json }` | Posting article to the database
 	| `/api/v1/article` | API | `GET` | `viewid=` | Getting article meta data in json format
-	| `/api/v1/article/filter` | API | `GET` | `tags=&author=&title=` | Retrieving articles that match the given conditions
+	| `/api/v1/article/filter` | API | `GET` | `tags=&author=&title=&date_from=&date_to=` | Retrieving articles that match ALL the given conditions
 	| `/` | GUI | `GET` | N/A |
 	| `/feed/` | GUI | `GET` | N/A | 
+
+### Resources (temporary solution)
+
+<p>
+To gather the data we want to analyze, a database holding all needed information of articles is applied. However, the regularly fetching worker cannot be implemented so far, the solution we can approach currently is writing lines of code that manually posts all articles to the database.
+</p>
+
+```ruby
+require 'json'
+require 'bnext_robot'
+require 'httparty'
+
+URL = 'http://trendcrawl.herokuapp.com/api/v1/article'
+
+cats = ['internet', 'tech', 'marketing', 'startup', 'people', 'skill']
+
+bot = BNextRobot.new
+
+cats.map do |cat|
+  (1..100).map do |pageno|
+    print "\rPosting aritcles of '#{cat}' at page #{pageno}"
+    feeds = bot.get_feeds(cat, pageno)
+    feeds.each do |feed|
+      h = Hash.new
+      h['title'] = feed.title
+      h['author'] = feed.author
+      h['date'] = feed.date
+      h['link'] = feed.link
+      h['tags'] = feed.tags
+      options = {
+        body: h.to_json,
+        headers: { 'Content-Type' => 'application/json' }
+      }
+      result = HTTParty.post(URL, options)
+    end
+  end
+  print "\n"
+end
+```
 	
 <h1 id="helpers" />
 ### Helpers
@@ -190,7 +229,7 @@ returns JSON of feeds info under a specific category and page number: *title*, *
 	| `TrendHelpers` | `get_popular_words` | func returns `Hash` | public | `max_num: cat: ` | get top `max_num` words that are puplar used so far with specific category
 
 <h1 id="models" />
-### Models
+### Models (Deprecated)
 
 - bnext_feed.rb
 
