@@ -104,7 +104,7 @@ describe 'Checking post articles to database' do
       get '/api/v1/article/filter?tags=parkme'
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body).must_equal []
+    last_response.body.must_equal ''
 
     ### no title found
     uri = '/api/v1/article/filter?title=專訪'
@@ -115,7 +115,7 @@ describe 'Checking post articles to database' do
       get uri
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body).must_equal []
+    last_response.body.must_equal ''
 
     ### no author found
     uri = '/api/v1/article/filter?author=李欣宜'
@@ -126,7 +126,7 @@ describe 'Checking post articles to database' do
       get uri
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body).must_equal []
+    last_response.body.must_equal ''
 
     ### no title, author, tags found
     uri = '/api/v1/article/filter?tags=parkme&author=李欣宜&title=專訪'
@@ -137,7 +137,7 @@ describe 'Checking post articles to database' do
       get uri
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body).must_equal []
+    last_response.body.must_equal ''
   end
 
   ### Testing bad search by database id
