@@ -221,16 +221,11 @@ class Answer
 			"\"imgs\":[\"https://3.bp.blogspot.com/-FKiHdCGeNsU/Vi_ecbmwvAI/AAAAAAABXeQ/UqzPfRYsPws/s600/061615_gm6_recap_760.jpg\"]" +
 		"}"
 
-	FILTER_ARTICLE = [
-		{
-			"id"=>38,
-			"title"=>"[專訪] 全球最大停車App創辦人：並非停車位不夠，只是你找不到",
-			"author"=>"李欣宜",
-			"date"=>"2015/10/27",
-			"tags"=>"[\"智慧城市\",\"車聯網\",\"停車應用\",\"Parkme\",\"Sam Friedman\"]",
-			"link"=>"http://www.bnext.com.tw/article/view/id/37797",
-			"created_at"=>"2015-12-06T12:49:16.084Z",
-			"updated_at"=>"2015-12-06T12:49:16.084Z"
+	FILTER_ARTICLE = {
+			"title" => "[專訪] 全球最大停車App創辦人：並非停車位不夠，只是你找不到",
+			"author" => "李欣宜",
+			"date" => "2015/10/27",
+			"tags" => "[\"智慧城市\",\"車聯網\",\"停車應用\",\"Parkme\",\"Sam Friedman\"]",
+			"link" => "http://www.bnext.com.tw/article/view/id/37797"
 		}
-	]
 end
