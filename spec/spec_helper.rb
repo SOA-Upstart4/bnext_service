@@ -5,6 +5,7 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'vcr'
 require 'webmock/minitest'
+require 'webrick/httputils'
 
 include Rack::Test::Methods
 
