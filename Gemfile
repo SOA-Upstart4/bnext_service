@@ -13,6 +13,7 @@ gem 'hirb'
 gem 'hirb-unicode'
 
 gem 'httparty'
+gem 'webrick'
 
 gem 'sinatra-flash'
 gem 'slim'
