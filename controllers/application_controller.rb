@@ -5,6 +5,7 @@ require 'sinatra/flash'
 require 'httparty'
 require 'hirb'
 require 'slim'
+require 'bnext_robot'
 
 ##
 # Simple web service to crawl Bnext webpages
@@ -202,9 +203,25 @@ class ApplicationController < Sinatra::Base
       end
       a = a.where("date >= ?", "#{params['date_from']}") if params.has_key? 'date_from'
       a = a.where("date <= ?", "#{params['date_to']}") if params.has_key? 'date_to'
-      a.map { |article| article.to_json }
+      a.to_json
     rescue
       halt 400
+    end
+  end
+
+  ### GET /api/rubygem/bnext_robot/get_feeds?cat=&page_no=
+  get_feeds = lambda do
+    content_type :json, 'charset' => 'utf-8'
+    if params.has_key? 'cat' and params.has_key? 'page_no'
+      begin
+        bot = BNextRobot.new
+        feeds = bot.get_feeds(params['cat'], params['page_no'])
+        feeds.map { |feed| feed.to_hash }.to_json
+      rescue
+        halt 400
+      end
+    else
+      ""
     end
   end
 
@@ -312,6 +329,9 @@ class ApplicationController < Sinatra::Base
   get '/api/v1/article/filter/?', &find_articles
   get '/api/v1/article/:id/?', &get_article_id
   delete '/api/v1/article/:id/?', &delete_article
+
+  # Rubygem
+  get '/api/rubygem/bnext_robot/get_feeds/?', &get_feeds
 
   # useless functions
   get '/api/v1/:ranktype/?', &get_feed_ranktype
