@@ -25,7 +25,7 @@ describe 'Checking post articles to database' do
       get '/api/v1/article/filter?tags=parkme'
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body)['title'].must_equal Answer::FILTER_ARTICLE['title']
+    JSON.parse(last_response.body)[0]['title'].must_equal Answer::FILTER_ARTICLE['title']
 
     ### Testing GET /api/v1/article/filter?author=
     uri = '/api/v1/article/filter?author=李欣宜'
@@ -35,7 +35,7 @@ describe 'Checking post articles to database' do
       get uri
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body)['author'].must_equal Answer::FILTER_ARTICLE['author']
+    JSON.parse(last_response.body)[0]['author'].must_equal Answer::FILTER_ARTICLE['author']
 
     ### Testing GET /api/v1/article/filter?title=
     uri = '/api/v1/article/filter?title=專訪'
@@ -45,21 +45,21 @@ describe 'Checking post articles to database' do
       get uri
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body)['date'].must_equal Answer::FILTER_ARTICLE['date']
+    JSON.parse(last_response.body)[0]['date'].must_equal Answer::FILTER_ARTICLE['date']
 
     ### Testing GET /api/v1/article/filter?date_from=
     VCR.use_cassette('filter_date_from_article') do
       get '/api/v1/article/filter?date_from=2015/10'
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body)['tags'].must_equal Answer::FILTER_ARTICLE['tags']
+    JSON.parse(last_response.body)[0]['tags'].must_equal Answer::FILTER_ARTICLE['tags']
 
     ### Testing GET /api/v1/article/filter?date_to=
     VCR.use_cassette('filter_date_from_article') do
       get '/api/v1/article/filter?date_to=2015/11'
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body)['link'].must_equal Answer::FILTER_ARTICLE['link']
+    JSON.parse(last_response.body)[0]['link'].must_equal Answer::FILTER_ARTICLE['link']
 
     ### Testing GET /api/v1/article/filter?tags=&author=&title=&date_from=&date_to=
     uri = '/api/v1/article/filter?tags=parkme&author=李欣宜&title=專訪&date_from=2015/10/27&date_to=2015/10/27'
@@ -69,7 +69,7 @@ describe 'Checking post articles to database' do
       get uri
     end
     last_response.must_be :ok?
-    JSON.parse(last_response.body)['title'].must_equal Answer::FILTER_ARTICLE['title']
+    JSON.parse(last_response.body)[0]['title'].must_equal Answer::FILTER_ARTICLE['title']
 
     ### Testing GET /api/v1/article/:id/
     most_recent_id = Article.order(:created_at).last
@@ -121,7 +121,7 @@ describe 'Checking get articles routes' do
       get '/api/v1/article/filter?tags=parkme'
     end
     last_response.must_be :ok?
-    last_response.body.must_equal ''
+    last_response.body.must_equal '[]'
 
     ### no title found
     uri = '/api/v1/article/filter?title=專訪'
@@ -131,7 +131,7 @@ describe 'Checking get articles routes' do
       get uri
     end
     last_response.must_be :ok?
-    last_response.body.must_equal ''
+    last_response.body.must_equal '[]'
 
     ### no author found
     uri = '/api/v1/article/filter?author=李欣宜'
@@ -141,21 +141,21 @@ describe 'Checking get articles routes' do
       get uri
     end
     last_response.must_be :ok?
-    last_response.body.must_equal ''
+    last_response.body.must_equal '[]'
 
     ### no date_from found
     VCR.use_cassette('filter_date_from_no_found') do
       get '/api/v1/article/filter?date_from=2015/10/27'
     end
     last_response.must_be :ok?
-    last_response.body.must_equal ''
+    last_response.body.must_equal '[]'
 
     ### no date_to found
     VCR.use_cassette('filter_date_to_no_found') do
       get '/api/v1/article/filter?date_to=2015/10/27'
     end
     last_response.must_be :ok?
-    last_response.body.must_equal ''
+    last_response.body.must_equal '[]'
 
     ### no title, author, tags, date_from, date_to found
     uri = '/api/v1/article/filter?tags=parkme&author=李欣宜&title=專訪&date_from=2015/10/27&date_to=2015/10/27'
@@ -165,7 +165,7 @@ describe 'Checking get articles routes' do
       get uri
     end
     last_response.must_be :ok?
-    last_response.body.must_equal ''
+    last_response.body.must_equal '[]'
   end
 
   ### Testing no_found GET /api/v1/article/:id/
