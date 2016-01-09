@@ -198,7 +198,7 @@ class ApplicationController < Sinatra::Base
       a = Article.all
       filters.each do |filter|
         if params.has_key? filter
-          a = a.where("#{filter} LIKE ?", "%#{params[filter]}%")
+          a = a.where("LOWER(#{filter}) LIKE LOWER(?)", "%#{params[filter]}%")
         end
       end
       a = a.where("date >= ?", "#{params['date_from']}") if params.has_key? 'date_from'
