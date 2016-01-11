@@ -6,6 +6,7 @@ require 'httparty'
 require 'hirb'
 require 'slim'
 require 'bnext_robot'
+require 'json'
 
 ##
 # Simple web service to crawl Bnext webpages
@@ -203,7 +204,11 @@ class ApplicationController < Sinatra::Base
       end
       a = a.where("date >= ?", "#{params['date_from']}") if params.has_key? 'date_from'
       a = a.where("date <= ?", "#{params['date_to']}") if params.has_key? 'date_to'
-      a.to_json
+      if a.length > 0
+        a.to_a.sort_by { |item| item['date'] }.reverse.to_json
+      else
+        '[]'
+      end
     rescue
       halt 400
     end
