@@ -205,7 +205,7 @@ class ApplicationController < Sinatra::Base
       a = a.where("date >= ?", "#{params['date_from']}") if params.has_key? 'date_from'
       a = a.where("date <= ?", "#{params['date_to']}") if params.has_key? 'date_to'
       if a.length > 0
-        JSON.parse(a.to_json).sort_by { |item| item['date'] }.reverse.to_json
+        a.to_a.sort_by { |item| item['date'] }.reverse.to_json
       else
         '[]'
       end
